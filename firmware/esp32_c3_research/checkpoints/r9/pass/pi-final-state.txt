@@ -1,0 +1,12 @@
+2026-08-28T01:41:28+05:30
+hostname=pidigitalspotter
+bluetooth_service=active
+powered=yes
+pairable=no
+discovering=no
+connected_devices=none
+paired_devices=none
+bonded_devices=none
+competing_ble_clients=none
+throttled=0x0
+temperature=53.5C

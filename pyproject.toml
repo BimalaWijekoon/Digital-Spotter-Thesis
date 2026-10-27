@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "digital-spotter-edge"
+version = "0.1.0"
+description = "Local-first Digital Spotter edge runtime"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "Proprietary" }
+authors = [{ name = "Digital Spotter" }]
+dependencies = [
+  "bleak==3.0.2",
+  "msgpack==1.1.1",
+  "numpy==1.26.4",
+  "pydantic==2.7.4",
+  "scipy==1.13.1",
+]
+
+[project.scripts]
+dsctl = "digital_spotter.cli:main"
+ds-imu-agent = "digital_spotter.imu.r9_runtime:main"
+ds-imu-r9-bench = "digital_spotter.imu.r9_bench:main"
+ds-imu-bench = "digital_spotter.imu.bench:main"
+ds-imu-security-bench = "digital_spotter.imu.security_bench:main"
+ds-camera-owner-bench = "digital_spotter.vision.camera_bench:main"
+ds-vision-agent = "digital_spotter.vision.runtime:main"
+
+[dependency-groups]
+dev = [
+  "pytest==8.2.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/digital_spotter"]
+
+[tool.uv]
+package = true

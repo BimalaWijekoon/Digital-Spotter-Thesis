@@ -1,0 +1,7 @@
+[Unit]
+Description=Digital Spotter research appliance
+Requires=digital-spotter-research-core.service
+Wants=digital-spotter-research-imu.service digital-spotter-research-media.service
+
+[Install]
+WantedBy=default.target

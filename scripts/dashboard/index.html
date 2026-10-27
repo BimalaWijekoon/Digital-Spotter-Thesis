@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Spotter — Dashboard</title>
+<meta name="description" content="Digital Spotter v4 BiLSTM+MHA inference dashboard with live IMU streaming">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+        --bg-primary:   #0a0c10;
+        --bg-card:      rgba(255,255,255,0.04);
+        --bg-tertiary:  rgba(255,255,255,0.06);
+        --glass:        rgba(255,255,255,0.07);
+        --border:       rgba(255,255,255,0.09);
+        --text-primary: #f1f5f9;
+        --text-secondary:#94a3b8;
+        --text-muted:   #475569;
+        --accent-blue:  #3b82f6;
+        --accent-cyan:  #06b6d4;
+        --accent-green: #10b981;
+        --accent-red:   #ef4444;
+        --accent-amber: #f59e0b;
+        --accent-purple:#8b5cf6;
+        --transition:   all 0.25s ease;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* ── Views ─────────────────────────────────────────────────── */
+    .view { display: none; min-height: 100vh; }
+    .view.active { display: flex; flex-direction: column; }
+
+    /* ── INIT VIEW ──────────────────────────────────────────────── */
+    #view-init {
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%),
+                    var(--bg-primary);
+    }
+    .init-card {
+        width: min(480px, 92vw);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 40px 36px;
+        backdrop-filter: blur(24px);
+        box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+        animation: fadeUp 0.5s ease;
+    }
+    @keyframes fadeUp {
+        from { opacity:0; transform:translateY(20px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
+    .init-logo {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--accent-blue);
+        margin-bottom: 6px;
+    }
+    .init-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+    .init-subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 32px;
+    }
+
+    .init-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .init-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: var(--transition);
+    }
+    .init-item.ready  { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.05); }
+    .init-item.failed { border-color: rgba(239,68,68,0.3);  background: rgba(239,68,68,0.05); }
+
+    .init-icon {
+        width: 32px; height: 32px;
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+        background: var(--glass);
+    }
+    .init-item.ready  .init-icon { background: rgba(16,185,129,0.15); }
+    .init-item.failed .init-icon { background: rgba(239,68,68,0.15); }
+
+    .init-info { flex: 1; }
+    .init-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .init-desc { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .init-item.ready  .init-name { color: var(--accent-green); }
+    .init-item.failed .init-name { color: var(--accent-red); }
+
+    .init-status {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .init-item.ready  .init-status { color: var(--accent-green); }
+    .init-item.failed .init-status { color: var(--accent-red); }
+
+    .spin {
+        display: inline-block;
+        width: 14px; height: 14px;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent-blue);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .init-progress-wrap {
+        height: 4px;
+        background: var(--bg-tertiary);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 14px;
+    }
+    .init-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+        border-radius: 2px;
+        transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+        width: 0%;
+    }
+    .init-status-msg {
+        text-align: center;
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+    /* ── READY VIEW ─────────────────────────────────────────────── */
+    #view-ready {
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at 50% 0%, rgba(16,185,129,0.12) 0%, transparent 70%),
+                    var(--bg-primary);
+    }
+    .ready-card {
+        width: min(520px, 92vw);
+        background: var(--bg-card);
+        border: 1px solid rgba(16,185,129,0.25);
+        border-radius: 24px;
+        padding: 48px 40px;
+        backdrop-filter: blur(24px);
+        box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px rgba(16,185,129,0.08);
+        animation: fadeUp 0.5s ease;
+        text-align: center;
+    }
+    .ready-icon { font-size: 56px; margin-bottom: 16px; }
+    .ready-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--accent-green);
+        margin-bottom: 8px;
+    }
+    .ready-sub {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 32px;
+    }
+    .ready-summary {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 36px;
+        text-align: left;
+    }
+    .ready-item {
+        background: var(--bg-tertiary);
+        border-radius: 10px;
+        padding: 12px 14px;
+        border-left: 3px solid var(--accent-green);
+    }
+    .ready-item-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .ready-item-val   { font-size: 13px; color: var(--text-primary); font-weight: 600; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+    .btn-start {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        border: none;
+        border-radius: 14px;
+        color: white;
+        font-size: 17px;
+        font-weight: 800;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 32px rgba(16,185,129,0.35);
+        transition: var(--transition);
+    }
+    .btn-start:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(16,185,129,0.45); }
+    .btn-start:active { transform: translateY(0); }
+
+    /* ── SESSION VIEW ───────────────────────────────────────────── */
+    #view-session {
+        flex-direction: column;
+        background: var(--bg-primary);
+    }
+    .session-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 24px;
+        background: rgba(16,185,129,0.05);
+        border-bottom: 1px solid rgba(16,185,129,0.15);
+        position: sticky; top: 0; z-index: 100;
+        backdrop-filter: blur(20px);
+    }
+    .session-topbar-left {
+        display: flex; align-items: center; gap: 12px;
+    }
+    .session-live-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--accent-green);
+        box-shadow: 0 0 8px var(--accent-green);
+        animation: livePulse 1.5s ease infinite;
+    }
+    @keyframes livePulse {
+        0%,100% { opacity:1; box-shadow:0 0 8px var(--accent-green); }
+        50%      { opacity:0.6; box-shadow:0 0 16px var(--accent-green); }
+    }
+    .session-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent-green);
+        letter-spacing: 0.5px;
+    }
+    .session-badges { display: flex; gap: 8px; align-items: center; }
+    .s-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .s-badge.live { border-color: rgba(16,185,129,0.4); color: var(--accent-green); }
+    .s-badge.warn { border-color: rgba(245,158,11,0.4); color: var(--accent-amber); }
+    .btn-stop {
+        padding: 8px 20px;
+        background: rgba(239,68,68,0.1);
+        border: 1px solid rgba(239,68,68,0.3);
+        border-radius: 10px;
+        color: var(--accent-red);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        transition: var(--transition);
+    }
+    .btn-stop:hover { background: rgba(239,68,68,0.2); }
+
+    .session-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding: 16px 24px 24px;
+        flex: 1;
+    }
+    @media (max-width: 900px) {
+        .session-body { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(20px);
+    }
+    .panel-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .panel-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--accent-blue);
+        box-shadow: 0 0 6px var(--accent-blue);
+    }
+
+    /* Demo toggle buttons (camera / sensor) */
+    .demo-toggle {
+        font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+        padding: 5px 12px; border-radius: 999px; cursor: pointer;
+        border: 1px solid rgba(239,68,68,0.4);
+        background: rgba(239,68,68,0.12); color: var(--accent-red);
+        transition: all 0.15s ease; white-space: nowrap;
+    }
+    .demo-toggle:hover { filter: brightness(1.15); }
+    .demo-toggle.on {
+        border-color: rgba(16,185,129,0.45);
+        background: rgba(16,185,129,0.14); color: var(--accent-green);
+    }
+
+    /* Chart */
+    .chart-container { position: relative; height: 220px; margin-bottom: 14px; }
+    .chart-legend {
+        display: flex; flex-wrap: wrap; gap: 6px;
+        margin-bottom: 12px;
+    }
+    .legend-item {
+        display: flex; align-items: center; gap: 5px;
+        font-size: 10px; color: var(--text-secondary);
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+    /* Live values row */
+    .imu-values {
+        display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+        margin-bottom: 10px;
+    }
+    .imu-val-box {
+        background: var(--bg-tertiary);
+        border-radius: 8px;
+        padding: 8px 10px;
+        border-left: 2px solid transparent;
+    }
+    .imu-val-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+    .imu-val-num   { font-size: 15px; font-weight: 700; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+    /* Prediction form */
+    .form-section { margin-bottom: 14px; }
+    .section-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+    }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .row3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .inp-box { display: flex; flex-direction: column; gap: 3px; }
+    .inp-box label { font-size: 10px; color: var(--text-muted); }
+    .inp-box input, .inp-box select {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 12px;
+        padding: 7px 9px;
+        font-family: 'JetBrains Mono', monospace;
+        width: 100%;
+        transition: var(--transition);
+    }
+    .inp-box input:focus, .inp-box select:focus {
+        outline: none;
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
+    }
+
+    .phase-tabs {
+        display: flex; gap: 4px;
+        background: var(--bg-tertiary);
+        padding: 4px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+    }
+    .tab-btn {
+        flex: 1; padding: 7px;
+        background: transparent;
+        border: none; color: var(--text-muted);
+        border-radius: 7px; font-weight: 600;
+        font-size: 11px; cursor: pointer;
+        transition: var(--transition);
+        font-family: 'Inter', sans-serif;
+    }
+    .tab-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+    .phase-content { display: none; }
+    .phase-content.active { display: flex; flex-direction: column; gap: 10px; }
+
+    .feat-cat {
+        background: var(--bg-tertiary);
+        border-radius: 10px;
+        padding: 12px;
+        border-left: 3px solid var(--border);
+    }
+    .feat-cat.vision  { border-left-color: var(--accent-purple); }
+    .feat-cat.angles  { border-left-color: var(--accent-green); }
+    .feat-cat.imu-cat { border-left-color: var(--accent-blue); }
+    .feat-cat.perf    { border-left-color: var(--accent-amber); }
+    .cat-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+
+    .joint-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+    .imu-grid   { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .input-item { display: flex; flex-direction: column; gap: 2px; }
+    .input-item span { font-size: 9px; color: var(--text-muted); }
+    .input-item input {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-size: 11px;
+        padding: 5px 7px;
+        font-family: 'JetBrains Mono', monospace;
+        width: 100%;
+        transition: var(--transition);
+    }
+    .input-item input:focus { outline: none; border-color: var(--accent-blue); }
+
+    /* Predict controls */
+    .predict-area { margin-top: 14px; }
+    .preset-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .btn-preset {
+        flex: 1; padding: 9px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--glass);
+        color: var(--text-secondary);
+        font-size: 11px; font-weight: 600;
+        cursor: pointer; transition: var(--transition);
+        font-family: 'Inter', sans-serif;
+    }
+    .btn-preset.good { border-color: rgba(16,185,129,0.3); color: var(--accent-green); }
+    .btn-preset.good:hover { background: rgba(16,185,129,0.1); }
+    .btn-preset.bad  { border-color: rgba(239,68,68,0.3); color: var(--accent-red); }
+    .btn-preset.bad:hover  { background: rgba(239,68,68,0.1); }
+
+    .btn-predict {
+        width: 100%; padding: 14px;
+        background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+        border: none; border-radius: 12px;
+        color: white; font-size: 14px; font-weight: 700;
+        cursor: pointer; transition: var(--transition);
+        font-family: 'Inter', sans-serif;
+        box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-predict:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.4); }
+    .btn-predict:disabled { background: var(--bg-tertiary); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .loader { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; }
+
+    /* Results */
+    .results-panel { display: none; margin-top: 14px; animation: fadeUp 0.4s ease; }
+    .results-panel.active { display: block; }
+    .result-card {
+        background: var(--bg-tertiary); border: 1px solid var(--border);
+        border-radius: 12px; padding: 20px; text-align: center;
+        position: relative; overflow: hidden;
+    }
+    .result-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--text-muted); }
+    .result-card.good::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
+    .result-card.bad::before  { background: linear-gradient(90deg, var(--accent-red), var(--accent-amber)); }
+    .result-label { font-size: 28px; font-weight: 800; margin: 6px 0; }
+    .result-label.good { color: var(--accent-green); }
+    .result-label.bad  { color: var(--accent-red); }
+    .prob-bar-wrap { width:100%; height:5px; background:var(--bg-primary); border-radius:3px; margin:12px 0 6px; overflow:hidden; }
+    .prob-bar { height:100%; border-radius:3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); width:0%; }
+    .prob-bar.good { background: var(--accent-green); }
+    .prob-bar.bad  { background: var(--accent-red); }
+    .prob-text { font-size:11px; color:var(--text-muted); display:flex; justify-content:space-between; }
+    .latency-info {
+        font-family: 'JetBrains Mono', monospace; font-size: 10px;
+        color: var(--text-muted); background: var(--bg-primary);
+        padding: 8px 12px; border-radius: 8px; margin-top: 12px; text-align: left;
+    }
+
+    /* Disconnect overlay */
+    .disconnect-banner {
+        display: none;
+        position: fixed; top: 0; left: 0; right: 0;
+        background: rgba(239,68,68,0.95); backdrop-filter: blur(10px);
+        color: white; text-align: center;
+        padding: 16px; font-weight: 700; font-size: 15px;
+        z-index: 999; animation: slideDown 0.3s ease;
+    }
+    .disconnect-banner.active { display: block; }
+    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
+    /* App Shell & CPU Temp */
+    .app-tabs { display: flex; gap: 8px; margin-right: auto; }
+    .app-tab-btn {
+        padding: 8px 16px; background: transparent; border: none;
+        color: var(--text-muted); font-weight: 600; font-size: 13px;
+        border-radius: 8px; cursor: pointer; transition: var(--transition);
+        font-family: 'Inter', sans-serif;
+    }
+    .app-tab-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .app-tab-content { display: none; }
+    .app-tab-content.active { display: grid; }
+    
+    .cpu-temp-badge {
+        font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+        padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border);
+        color: var(--text-secondary); background: var(--bg-card);
+        display: flex; align-items: center; gap: 6px;
+    }
+    .cpu-temp-badge.hot {
+        color: var(--accent-red); border-color: rgba(239,68,68,0.4);
+        background: rgba(239,68,68,0.1); animation: pulseRed 1s infinite;
+    }
+    @keyframes pulseRed { 0%,100%{box-shadow:none;} 50%{box-shadow:0 0 10px rgba(239,68,68,0.5);} }
+    .cpu-alert-popup {
+        position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100%);
+        background: rgba(239,68,68,0.95); color: white; padding: 12px 24px;
+        border-radius: 12px; font-weight: 700; font-size: 14px; z-index: 2000;
+        box-shadow: 0 10px 30px rgba(239,68,68,0.4); opacity: 0; pointer-events: none;
+        transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .cpu-alert-popup.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body>
+
+<!-- ── ALERTS & BANNERS ──────────────────────────────────────── -->
+<div class="disconnect-banner" id="disconnectBanner">
+    ⚠️ ESP32 Disconnected — Returning to initialization screen…
+</div>
+<div class="cpu-alert-popup" id="cpuAlertPopup">
+    🔥 CPU Temp High (>60°C)! Please turn on cooling fans manually.
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     VIEW 1 — INITIALIZATION
+═══════════════════════════════════════════════════════════════ -->
+<div class="view active" id="view-init">
+    <div class="init-card">
+        <div class="init-logo">Digital Spotter</div>
+        <div class="init-title">System Initialization</div>
+        <div class="init-subtitle">Starting all components…</div>
+
+        <ul class="init-list" id="initList">
+            <li class="init-item" id="ic-model">
+                <div class="init-icon">🧠</div>
+                <div class="init-info">
+                    <div class="init-name">LSTM Model</div>
+                    <div class="init-desc">v4 BiLSTM + Multi-Head Attention</div>
+                </div>
+                <div class="init-status"><span class="spin"></span></div>
+            </li>
+            <li class="init-item" id="ic-pre">
+                <div class="init-icon">⚙️</div>
+                <div class="init-info">
+                    <div class="init-name">Preprocessor</div>
+                    <div class="init-desc">Scaler + imputer pipeline</div>
+                </div>
+                <div class="init-status"><span class="spin"></span></div>
+            </li>
+            <li class="init-item" id="ic-buzzer">
+                <div class="init-icon">🔔</div>
+                <div class="init-info">
+                    <div class="init-name">Pi Buzzer</div>
+                    <div class="init-desc">GPIO feedback</div>
+                </div>
+                <div class="init-status"><span class="spin"></span></div>
+            </li>
+            <li class="init-item" id="ic-rgb">
+                <div class="init-icon">💡</div>
+                <div class="init-info">
+                    <div class="init-name">Pi RGB LED</div>
+                    <div class="init-desc">Status indicator</div>
+                </div>
+                <div class="init-status"><span class="spin"></span></div>
+            </li>
+            <li class="init-item" id="ic-mqtt">
+                <div class="init-icon">📡</div>
+                <div class="init-info">
+                    <div class="init-name">MQTT / HiveMQ</div>
+                    <div class="init-desc">Cloud broker connection</div>
+                </div>
+                <div class="init-status"><span class="spin"></span></div>
+            </li>
+            <li class="init-item" id="ic-esp32">
+                <div class="init-icon">⌚</div>
+                <div class="init-info">
+                    <div class="init-name">ESP32-C3 IMU Node</div>
+                    <div class="init-desc">Waiting for heartbeat (IDLE state)…</div>
+                </div>
+                <div class="init-status"><span class="spin"></span></div>
+            </li>
+        </ul>
+
+        <div class="init-progress-wrap">
+            <div class="init-progress-bar" id="initProgress"></div>
+        </div>
+        <div class="init-status-msg" id="initMsg">Connecting to server…</div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     VIEW 2 — READY TO START
+═══════════════════════════════════════════════════════════════ -->
+<div class="view" id="view-ready">
+    <div class="ready-card">
+        <div class="ready-icon">✅</div>
+        <div class="ready-title">All Systems Operational</div>
+        <div class="ready-sub">ESP32 is online and idle. Click Start to send the streaming command.</div>
+
+        <div class="ready-summary" id="readySummary">
+            <div class="ready-item">
+                <div class="ready-item-label">Model</div>
+                <div class="ready-item-val" id="rsModel">—</div>
+            </div>
+            <div class="ready-item">
+                <div class="ready-item-label">IMU</div>
+                <div class="ready-item-val" id="rsImu">—</div>
+            </div>
+            <div class="ready-item">
+                <div class="ready-item-label">Threshold</div>
+                <div class="ready-item-val" id="rsThresh">—</div>
+            </div>
+            <div class="ready-item">
+                <div class="ready-item-label">Buzzer</div>
+                <div class="ready-item-val" id="rsBuzzer">—</div>
+            </div>
+            <div class="ready-item">
+                <div class="ready-item-label">ESP32 State</div>
+                <div class="ready-item-val" id="rsEsp32State">—</div>
+            </div>
+            <div class="ready-item">
+                <div class="ready-item-label">RSSI</div>
+                <div class="ready-item-val" id="rsRssi">—</div>
+            </div>
+        </div>
+
+        <button class="btn-start" id="btnStart" onclick="startSession()" disabled>
+            ▶ &nbsp; START SESSION
+        </button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     VIEW 3 — ACTIVE SESSION
+═══════════════════════════════════════════════════════════════ -->
+<div class="view" id="view-session">
+    <!-- Top bar -->
+    <div class="session-topbar">
+        <div class="app-tabs">
+            <button class="app-tab-btn active" id="tabBtnAuto" onclick="switchAppTab('auto')">Auto Dashboard</button>
+            <button class="app-tab-btn" id="tabBtnManual" onclick="switchAppTab('manual')">Manual Debugging</button>
+        </div>
+        <div class="session-topbar-left">
+            <div class="cpu-temp-badge" id="cpuTempBadge">🌡️ CPU: —°C</div>
+            <div class="session-live-dot"></div>
+            <div class="session-label" id="repStateLabel">AWAITING EXERCISE</div>
+            <div class="session-badges">
+                <span class="s-badge live" id="sbModel">Model: —</span>
+                <span class="s-badge" id="sbImu">IMU: —</span>
+                <span class="s-badge live">Threshold: <span id="sbThresh">—</span></span>
+                <span class="s-badge" id="sbRssi" style="font-family:'JetBrains Mono',monospace">RSSI: —</span>
+                <span class="s-badge" id="sbSessionId" style="font-size:9px;opacity:0.6">—</span>
+            </div>
+        </div>
+        <button class="btn-stop" onclick="stopSession()">⏹ Stop Session</button>
+    </div>
+
+    <!-- AUTO DASHBOARD TAB -->
+    <div class="session-body app-tab-content active" id="appTabAuto" style="grid-template-columns: 40% 1fr;">
+        <!-- LEFT: Camera -->
+        <div class="panel" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+            <div class="panel-title" style="padding: 16px 20px 0; display:flex; align-items:center;">
+                <div class="panel-dot" style="background:var(--accent-purple)"></div>
+                Live Camera Stream — Full Body
+                <button id="btnCamera" class="demo-toggle" onclick="toggleCamera()"
+                        style="margin-left:auto;">📷 Cam: OFF</button>
+            </div>
+            <div style="flex:1; background:#000; display:flex; align-items:center; justify-content:center; margin-top:10px;">
+                <img id="liveVideo" src="/video_feed" style="width:100%; height:calc(100vh - 160px); object-fit:contain; display:block;">
+            </div>
+        </div>
+        
+        <!-- RIGHT: Form, Chart, Predict -->
+        <div style="display:flex;flex-direction:column;gap:14px; overflow-y:auto; max-height:calc(100vh - 80px);">
+            <!-- Subject/Session Settings -->
+            <div class="panel">
+                <div class="panel-title"><div class="panel-dot" style="background:var(--accent-cyan)"></div>Session Settings</div>
+                <div class="row3" style="margin-bottom:10px;">
+                    <div class="inp-box"><label>Height (cm)</label><input type="number" id="height_cm" value="176.0" step="0.1"></div>
+                    <div class="inp-box"><label>Weight (kg)</label><input type="number" id="weight_kg" value="78.0" step="0.1"></div>
+                    <div class="inp-box"><label>Femur/Tibia</label><input type="number" id="femur_tibia_ratio" value="1.17" step="0.01"></div>
+                </div>
+                <div class="row2">
+                    <div class="inp-box"><label>Exercise</label>
+                        <select id="exercise_id">
+                            <option value="0">Squat (0)</option>
+                            <option value="1" selected>Deadlift (1)</option>
+                        </select>
+                    </div>
+                    <div class="inp-box"><label>Load (kg)</label><input type="number" id="load_kg" value="95.0" step="0.5"></div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="panel">
+                <div class="panel-title" style="display:flex; align-items:center;">
+                    <div class="panel-dot"></div>
+                    Live IMU Stream
+                    <button id="btnSensor" class="demo-toggle on" onclick="toggleSensor()"
+                            style="margin-left:auto;">📡 IMU: ON</button>
+                    <span id="chartStatus" style="margin-left:10px;font-size:10px;color:var(--text-muted)">connecting…</span>
+                </div>
+                <div class="chart-container" style="height: 180px;">
+                    <canvas id="imuChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Predict Results -->
+            <div class="panel">
+                <div class="panel-title" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <div class="panel-dot" style="background:var(--accent-amber)"></div>Model Predictions
+                    </div>
+                    <label style="font-size:10px; color:var(--text-muted); cursor:pointer;">
+                        <input type="checkbox" id="autoPredictToggle" onchange="toggleAutoPredict()"> AUTO PREDICT
+                    </label>
+                </div>
+                <div class="results-panel active" id="resultsPanel" style="margin-top:0;">
+                    <div class="result-card" id="resultCard" style="padding: 12px;">
+                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:700;margin-bottom:6px">BiLSTM + Multi-Head Attention</div>
+                        <div id="resultLabel" class="result-label" style="font-size:22px;">—</div>
+                        <div class="prob-bar-wrap" style="margin:8px 0 4px;"><div id="probBar" class="prob-bar"></div></div>
+                        <div class="prob-text">
+                            <span>Good: <span id="probGood">0</span>%</span>
+                            <span>Bad: <span id="probBad">0</span>%</span>
+                        </div>
+                    </div>
+                    <div class="latency-info" id="latencyInfo" style="margin-top:8px;">Latency: —</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANUAL DEBUGGING TAB -->
+    <div class="session-body app-tab-content" id="appTabManual" style="grid-template-columns: 1fr; overflow-y:auto; max-height:calc(100vh - 80px);">
+        <div class="panel">
+            <div class="panel-title"><div class="panel-dot" style="background:var(--accent-purple)"></div>Manual Frame Capture & Debugging</div>
+            <div class="preset-row">
+                <button class="btn-preset good" onclick="loadGoodPreset()">🟢 Load Good Form Preset</button>
+                <button class="btn-preset bad"  onclick="loadBadPreset()">🔴 Load Bad Form Preset</button>
+            </div>
+            <button class="btn-predict" id="predictBtn" onclick="runPrediction()" style="margin-bottom: 20px;">
+                <span>⚡ Run Manual Inference</span>
+                <div class="loader" id="loader"></div>
+            </button>
+            <div id="errorMsg" style="color:var(--accent-red);font-size:12px;margin-bottom:10px;display:none"></div>
+
+            <div class="phase-tabs">
+                <button class="tab-btn active" onclick="switchPhase(1)">Phase 1 · Descent</button>
+                <button class="tab-btn" onclick="switchPhase(2)">Phase 2 · Bottom</button>
+                <button class="tab-btn" onclick="switchPhase(3)">Phase 3 · Ascent</button>
+            </div>
+
+            <!-- Phase 1 -->
+            <div id="phase1" class="phase-content active">
+                <button class="btn-preset good" style="width:100%;margin-bottom:8px;padding:12px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="captureLiveState(1)">
+                    📸 Capture Live State to Phase 1
+                </button>
+                <div class="feat-cat vision"><div class="cat-title">📷 Vision Coords (X,Y)</div><div class="joint-grid" id="vision-1"></div></div>
+                <div class="feat-cat angles"><div class="cat-title">📐 Trunk &amp; Asymmetry</div><div class="imu-grid" id="angles-1"></div></div>
+                <div class="feat-cat imu-cat"><div class="cat-title">⌚ IMU Sensor</div><div class="imu-grid" id="imu-1"></div></div>
+                <div class="feat-cat perf"><div class="cat-title">⚡ Bar Performance</div><div class="imu-grid" id="perf-1"></div></div>
+            </div>
+            <!-- Phase 2 -->
+            <div id="phase2" class="phase-content">
+                <button class="btn-preset good" style="width:100%;margin-bottom:8px;padding:12px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="captureLiveState(2)">
+                    📸 Capture Live State to Phase 2
+                </button>
+                <div class="feat-cat vision"><div class="cat-title">📷 Vision Coords (X,Y)</div><div class="joint-grid" id="vision-2"></div></div>
+                <div class="feat-cat angles"><div class="cat-title">📐 Trunk &amp; Asymmetry</div><div class="imu-grid" id="angles-2"></div></div>
+                <div class="feat-cat imu-cat"><div class="cat-title">⌚ IMU Sensor</div><div class="imu-grid" id="imu-2"></div></div>
+                <div class="feat-cat perf"><div class="cat-title">⚡ Bar Performance</div><div class="imu-grid" id="perf-2"></div></div>
+            </div>
+            <!-- Phase 3 -->
+            <div id="phase3" class="phase-content">
+                <button class="btn-preset good" style="width:100%;margin-bottom:8px;padding:12px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="captureLiveState(3)">
+                    📸 Capture Live State to Phase 3
+                </button>
+                <div class="feat-cat vision"><div class="cat-title">📷 Vision Coords (X,Y)</div><div class="joint-grid" id="vision-3"></div></div>
+                <div class="feat-cat angles"><div class="cat-title">📐 Trunk &amp; Asymmetry</div><div class="imu-grid" id="angles-3"></div></div>
+                <div class="feat-cat imu-cat"><div class="cat-title">⌚ IMU Sensor</div><div class="imu-grid" id="imu-3"></div></div>
+                <div class="feat-cat perf"><div class="cat-title">⚡ Bar Performance</div><div class="imu-grid" id="perf-3"></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = window.location.origin;
+
+// ═══════════════════════════════════════════════════════════════
+// VIEW MANAGEMENT
+// ═══════════════════════════════════════════════════════════════
+function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function switchAppTab(tab) {
+    document.getElementById('tabBtnAuto').classList.toggle('active', tab === 'auto');
+    document.getElementById('tabBtnManual').classList.toggle('active', tab === 'manual');
+    document.getElementById('appTabAuto').classList.toggle('active', tab === 'auto');
+    document.getElementById('appTabManual').classList.toggle('active', tab === 'manual');
+}
+
+let tempAlertShown = false;
+function updateCpuTemp(temp) {
+    const badge = document.getElementById('cpuTempBadge');
+    if (!badge) return;
+    badge.textContent = `🌡️ CPU: ${temp.toFixed(1)}°C`;
+    
+    if (temp > 60.0) {
+        badge.classList.add('hot');
+        if (!tempAlertShown) {
+            tempAlertShown = true;
+            const popup = document.getElementById('cpuAlertPopup');
+            if (popup) {
+                popup.classList.add('show');
+                setTimeout(() => popup.classList.remove('show'), 6000);
+            }
+        }
+    } else {
+        badge.classList.remove('hot');
+        tempAlertShown = false;
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT POLLING
+// ═══════════════════════════════════════════════════════════════
+const COMPONENTS = [
+    { id: 'ic-model',  key: 'model_ready',        label: v => v.model_mock ? 'Mock' : 'Real TFLite',    reasonKey: 'model'  },
+    { id: 'ic-pre',    key: 'preprocessor_ready',  label: v => v.preprocessor_mock ? 'Mock' : 'Real',   reasonKey: 'preprocessor' },
+    { id: 'ic-buzzer', key: 'buzzer_ready',         label: v => v.buzzer_mock ? 'Mock' : `GPIO ${v.buzzer_pin}`, reasonKey: null },
+    { id: 'ic-rgb',    key: 'rgb_ready',            label: v => v.rgb_mock ? 'Mock' : 'GPIO',           reasonKey: null   },
+    { id: 'ic-mqtt',   key: 'mqtt_connected',  label: () => 'HiveMQ Cloud',                        reasonKey: 'imu', retryable: true },
+    { id: 'ic-esp32',  key: 'esp32_online',     label: v => {
+        const rssi = v.esp32_rssi ? ` ${v.esp32_rssi}dBm` : '';
+        return `${v.esp32_state || 'idle'}${rssi}`;
+    },                                                                                               reasonKey: 'imu', retryable: true },
+];
+let _initInterval = null;
+let _lastStatus = null;
+
+function setItem(item, v, status, reasons) {
+    const el = document.getElementById(item.id);
+    const descEl = el.querySelector('.init-desc');
+    const statusEl = el.querySelector('.init-status');
+    if (status === 'ready') {
+        el.classList.add('ready'); el.classList.remove('failed');
+        statusEl.textContent = item.label(v);
+        // Clear any error description
+        if (descEl.dataset.orig) descEl.textContent = descEl.dataset.orig;
+    } else {
+        el.classList.remove('ready', 'failed');
+        // Show reason if known
+        const reason = reasons && item.reasonKey ? reasons[item.reasonKey] : null;
+        if (reason) {
+            if (!descEl.dataset.orig) descEl.dataset.orig = descEl.textContent;
+            descEl.textContent = '⚠ ' + reason;
+            el.classList.add('failed');
+            if (item.retryable) {
+                statusEl.innerHTML = `<button onclick="retryBridge()" style="
+                    background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.4);
+                    color:#3b82f6;border-radius:6px;padding:4px 10px;font-size:10px;
+                    font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">↻ Retry</button>`;
+            } else {
+                statusEl.innerHTML = '<span class="spin"></span>';
+            }
+        } else {
+            if (descEl.dataset.orig) descEl.textContent = descEl.dataset.orig;
+            statusEl.innerHTML = '<span class="spin"></span>';
+        }
+    }
+}
+
+async function retryBridge() {
+    // Update both MQTT + ESP32 items to "retrying" state
+    ['ic-mqtt', 'ic-esp32'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('ready','failed');
+        el.querySelector('.init-status').innerHTML = '<span class="spin"></span>';
+        const d = el.querySelector('.init-desc');
+        if (d.dataset.orig) d.textContent = d.dataset.orig;
+    });
+    document.getElementById('initMsg').textContent = 'Reconnecting MQTT bridge…';
+    try {
+        const r = await fetch(`${API}/reconnect/bridge`, { method: 'POST' });
+        const d = await r.json();
+        console.log('[RECONNECT]', d);
+        // Resume polling — it will pick up the new state
+        if (!_initInterval) {
+            _initInterval = setInterval(pollInit, 1500);
+        }
+        pollInit();
+    } catch(e) {
+        document.getElementById('initMsg').textContent = 'Reconnect failed: ' + e.message;
+    }
+}
+
+async function pollInit() {
+    try {
+        const r = await fetch(`${API}/status`);
+        if (!r.ok) throw new Error('not ready');
+        const v = await r.json();
+        _lastStatus = v;
+        const reasons = v.mock_reasons || {};
+        if (v.cpu_temp !== undefined) updateCpuTemp(v.cpu_temp);
+
+        let ready = 0;
+        COMPONENTS.forEach(c => {
+            if (v[c.key]) { setItem(c, v, 'ready', reasons); ready++; }
+            else           { setItem(c, v, 'waiting', reasons); }
+        });
+
+        const pct = Math.round((ready / COMPONENTS.length) * 100);
+        document.getElementById('initProgress').style.width = pct + '%';
+
+        // Show env details if IMU is mock
+        let msg = ready === COMPONENTS.length ? 'All systems ready!' : `Initializing… (${ready}/${COMPONENTS.length})`;
+        if (v.imu_mock && v.env) {
+            msg += `  ·  MQTT_ENABLED=${v.env.mqtt_enabled}  broker=${v.env.mqtt_broker}`;
+        }
+        document.getElementById('initMsg').textContent = msg;
+
+        if (v.all_ready) {
+            clearInterval(_initInterval);
+            _initInterval = null;
+            setTimeout(() => transitionToReady(v), 600);
+        }
+    } catch {
+        document.getElementById('initMsg').textContent = 'Waiting for server…';
+    }
+}
+
+function transitionToReady(v) {
+    document.getElementById('rsModel').textContent      = v.model_mock  ? 'Mock' : 'Real TFLite';
+    document.getElementById('rsImu').textContent        = v.imu_mock    ? 'Mock' : 'MQTT Live';
+    document.getElementById('rsThresh').textContent     = v.threshold;
+    document.getElementById('rsBuzzer').textContent     = v.buzzer_mock ? 'Mock' : `GPIO ${v.buzzer_pin}`;
+    document.getElementById('rsEsp32State').textContent = v.esp32_state || 'idle';
+    document.getElementById('rsRssi').textContent       = v.esp32_rssi  ? `${v.esp32_rssi} dBm` : '—';
+    // Enable Start button now that ESP32 is confirmed online
+    const btn = document.getElementById('btnStart');
+    btn.disabled = false;
+    btn.textContent = '▶   START SESSION';
+    showView('view-ready');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SESSION START / STOP
+// ═══════════════════════════════════════════════════════════════
+async function startSession() {
+    const btn = document.getElementById('btnStart');
+    btn.textContent = 'Sending start… (waiting for ESP32 ack)';
+    btn.disabled = true;
+    try {
+        const r = await fetch(`${API}/session/start`, { method: 'POST' });
+        if (!r.ok) throw new Error((await r.json()).detail);
+        const d = await r.json();
+        // Populate session badges
+        if (_lastStatus) {
+            document.getElementById('sbModel').textContent   = `Model: ${_lastStatus.model_mock ? 'Mock' : 'TFLite'}`;
+            document.getElementById('sbImu').textContent     = `IMU: ${_lastStatus.imu_mock ? 'Mock' : 'MQTT Live'}`;
+            document.getElementById('sbThresh').textContent  = _lastStatus.threshold;
+            document.getElementById('sbImu').className       = `s-badge ${_lastStatus.imu_mock ? 'warn' : 'live'}`;
+            const rssi = _lastStatus.esp32_rssi ? `${_lastStatus.esp32_rssi} dBm` : '—';
+            document.getElementById('sbRssi').textContent    = `RSSI: ${rssi}`;
+        }
+        if (d.session_id) {
+            document.getElementById('sbSessionId').textContent = d.session_id;
+        }
+        buildForm();
+        loadGoodPreset();
+        showView('view-session');
+        startImuPolling();
+        startDisconnectWatch();
+    } catch(e) {
+        btn.textContent = '▶   START SESSION';
+        btn.disabled = false;
+        alert('Cannot start session: ' + e.message);
+    }
+}
+
+async function stopSession() {
+    const stopBtn = document.querySelector('.btn-stop');
+    if (stopBtn) { stopBtn.textContent = 'Stopping…'; stopBtn.disabled = true; }
+    stopImuPolling();
+    stopDisconnectWatch();
+    await fetch(`${API}/session/stop`, { method: 'POST' });
+    if (stopBtn) { stopBtn.textContent = '⏹ Stop Session'; stopBtn.disabled = false; }
+    showView('view-init');
+    // Restart init polling to re-confirm ESP32 is back to IDLE
+    _initInterval = setInterval(pollInit, 1500);
+    pollInit();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHART
+// ═══════════════════════════════════════════════════════════════
+const MAX_POINTS = 120; // 6 seconds at ~20 Hz
+let imuChart = null;
+
+function buildChart() {
+    const ctx = document.getElementById('imuChart').getContext('2d');
+    const blank = Array(MAX_POINTS).fill(null);
+    imuChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: blank.slice(),
+            datasets: [
+                { label:'AccX',  data: blank.slice(), borderColor:'#ef4444', borderWidth:1.5, pointRadius:0, tension:0.3 },
+                { label:'AccY',  data: blank.slice(), borderColor:'#10b981', borderWidth:1.5, pointRadius:0, tension:0.3 },
+                { label:'AccZ',  data: blank.slice(), borderColor:'#3b82f6', borderWidth:1.5, pointRadius:0, tension:0.3 },
+                { label:'GyroX', data: blank.slice(), borderColor:'#f59e0b', borderWidth:1,   pointRadius:0, tension:0.3 },
+                { label:'GyroY', data: blank.slice(), borderColor:'#8b5cf6', borderWidth:1,   pointRadius:0, tension:0.3 },
+                { label:'GyroZ', data: blank.slice(), borderColor:'#06b6d4', borderWidth:1,   pointRadius:0, tension:0.3 },
+            ]
+        },
+        options: {
+            animation: false,
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'none' },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: {
+                x: { display: false },
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.04)' },
+                    ticks: { color: '#475569', font: { size: 9, family: 'JetBrains Mono' } }
+                }
+            }
+        }
+    });
+}
+
+function pushChartData(d) {
+    if (!imuChart) return;
+    const ds = imuChart.data.datasets;
+    const vals = [d.acc_x, d.acc_y, d.acc_z, d.gyro_x, d.gyro_y, d.gyro_z];
+    ds.forEach((s, i) => {
+        s.data.push(vals[i]);
+        if (s.data.length > MAX_POINTS) s.data.shift();
+    });
+    imuChart.data.labels.push('');
+    if (imuChart.data.labels.length > MAX_POINTS) imuChart.data.labels.shift();
+    imuChart.update('none');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMU POLLING (session-only)
+// ═══════════════════════════════════════════════════════════════
+const REP_PHASES = {0: "AWAITING EXERCISE", 1: "TRACKING REP: DESCENT", 2: "TRACKING REP: BOTTOM", 3: "TRACKING REP: ASCENT"};
+
+function startImuPolling() {
+    buildChart();
+}
+
+function stopImuPolling() {
+    if (imuChart) { imuChart.destroy(); imuChart = null; }
+}
+
+async function toggleAutoPredict() {
+    await fetch(`${API}/toggle-auto-predict`, { method: 'POST' });
+}
+
+// ── Demo toggles: IMU sensor (default ON) + Camera (default OFF) ──────────
+let sensorOn = true;
+let cameraOn = false;
+
+function renderSensorBtn() {
+    const b = document.getElementById('btnSensor');
+    if (!b) return;
+    b.textContent = sensorOn ? '📡 IMU: ON' : '📡 IMU: OFF';
+    b.classList.toggle('on', sensorOn);
+}
+function renderCameraBtn() {
+    const b = document.getElementById('btnCamera');
+    if (b) {
+        b.textContent = cameraOn ? '📷 Cam: ON' : '📷 Cam: OFF';
+        b.classList.toggle('on', cameraOn);
+    }
+    // Force the MJPEG <img> to re-open so it picks up live/placeholder frames.
+    const vid = document.getElementById('liveVideo');
+    if (vid) vid.src = `/video_feed?t=${Date.now()}`;
+}
+
+async function toggleSensor() {
+    try {
+        const r = await fetch(`${API}/toggle-sensor`, { method: 'POST' });
+        const v = await r.json();
+        sensorOn = v.sensor_on;
+    } catch (e) { sensorOn = !sensorOn; }
+    renderSensorBtn();
+    // Reflect immediately on the chart label (don't wait for the status poll).
+    const tag = document.getElementById('chartStatus');
+    if (tag && !sensorOn) {
+        tag.textContent = '● IMU OFF (paused)';
+        tag.style.color = 'var(--accent-amber)';
+    }
+}
+
+async function toggleCamera() {
+    try {
+        const r = await fetch(`${API}/toggle-camera`, { method: 'POST' });
+        const v = await r.json();
+        cameraOn = v.camera_on;
+    } catch (e) { cameraOn = !cameraOn; }
+    renderCameraBtn();
+}
+
+// Sync button states from the server (called on load / status polls).
+function syncDemoToggles(v) {
+    if (v && typeof v.sensor_on === 'boolean') { sensorOn = v.sensor_on; renderSensorBtn(); }
+    if (v && typeof v.camera_on === 'boolean') {
+        if (v.camera_on !== cameraOn) { cameraOn = v.camera_on; renderCameraBtn(); }
+        else { cameraOn = v.camera_on; }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DISCONNECT WATCH
+// ═══════════════════════════════════════════════════════════════
+let _watchInterval = null;
+
+function startDisconnectWatch() {
+    _watchInterval = setInterval(async () => {
+        try {
+            const r = await fetch(`${API}/status`);
+            const v = await r.json();
+            if (v.cpu_temp !== undefined) updateCpuTemp(v.cpu_temp);
+            syncDemoToggles(v);
+            updateImuStatus(v);   // notify only — never auto-stop the session
+        } catch { /* silent */ }
+    }, 2000);
+}
+
+function stopDisconnectWatch() {
+    clearInterval(_watchInterval);
+    _watchInterval = null;
+}
+
+// Reflect IMU state on the chart status label. Turning the IMU off or losing the
+// ESP32 heartbeat now only NOTIFIES — it never stops the session or returns to
+// the init screen. (Live data itself flips the label to LIVE in the WS handler.)
+function updateImuStatus(v) {
+    const tag = document.getElementById('chartStatus');
+    if (!tag || v.session_active === false) return;
+    if (v.esp32_online === false) {
+        tag.textContent = '● IMU DISCONNECTED';
+        tag.style.color = 'var(--accent-red)';
+    } else if (v.sensor_on === false) {
+        tag.textContent = '● IMU OFF (paused)';
+        tag.style.color = 'var(--accent-amber)';
+    }
+    // online + sensor on → the telemetry handler sets '● LIVE'
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FORM BUILDER
+// ═══════════════════════════════════════════════════════════════
+const joints = ['L_Shoulder','R_Shoulder','L_Hip','R_Hip','L_Knee','R_Knee','L_Ankle','R_Ankle'];
+const angleFields = [
+    { f:'angle_trunk_inclination', l:'Trunk Incl.' },
+    { f:'hip_flexion_asymmetry',   l:'Hip Asym' },
+    { f:'knee_flexion_asymmetry',  l:'Knee Asym' },
+    { f:'ankle_dorsiflexion_asymmetry', l:'Ankle Asym' },
+];
+const imuFields = [
+    { f:'imu_acc_x',  l:'Acc X'  }, { f:'imu_acc_y',  l:'Acc Y'  }, { f:'imu_acc_z',  l:'Acc Z' },
+    { f:'imu_gyro_x', l:'Gyro X' }, { f:'imu_gyro_y', l:'Gyro Y' }, { f:'imu_gyro_z', l:'Gyro Z' },
+];
+const perfFields = [
+    { f:'v_bar_velocity_vertical', l:'Bar Vel (m/s)' },
+    { f:'p_bar_power_watts',       l:'Bar Power (W)' },
+    { f:'smoothness_jerk',         l:'Jerk' },
+];
+
+function inp(p, field, step, val) {
+    return `<div class="input-item"><span>${field.replace(/_/g,' ')}</span>
+        <input type="number" class="p${p}" data-field="${field}" step="${step}" value="${val}"></div>`;
+}
+
+function buildForm() {
+    for (let p = 1; p <= 3; p++) {
+        // Vision
+        const vg = document.getElementById(`vision-${p}`);
+        if (vg && !vg.hasChildNodes()) {
+            joints.forEach(j => {
+                const f = j.toLowerCase();
+                vg.innerHTML += inp(p, `vis_${f}_x`, '0.001', '0.0') + inp(p, `vis_${f}_y`, '0.001', '0.0');
+            });
+        }
+        // Angles
+        const ag = document.getElementById(`angles-${p}`);
+        if (ag && !ag.hasChildNodes()) angleFields.forEach(a => { ag.innerHTML += inp(p, a.f, '0.1', '0.0'); });
+        // IMU
+        const ig = document.getElementById(`imu-${p}`);
+        if (ig && !ig.hasChildNodes()) imuFields.forEach(i => { ig.innerHTML += inp(p, i.f, '0.01', '0.0'); });
+        // Perf
+        const pg = document.getElementById(`perf-${p}`);
+        if (pg && !pg.hasChildNodes()) perfFields.forEach(f => { pg.innerHTML += inp(p, f.f, '0.01', '0.0'); });
+    }
+}
+
+function switchPhase(n) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i === n-1));
+    document.querySelectorAll('.phase-content').forEach((c,i) => c.classList.toggle('active', i === n-1));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PRESETS
+// ═══════════════════════════════════════════════════════════════
+function fillPhases(data) {
+    for (let p = 1; p <= 3; p++) {
+        if (!data[`phase${p}`]) continue;
+        const pd = data[`phase${p}`];
+        document.querySelectorAll(`.p${p}`).forEach(inp => {
+            const f = inp.getAttribute('data-field');
+            if (pd[f] !== undefined) inp.value = pd[f];
+        });
+    }
+}
+
+async function captureLiveState(phase) {
+    try {
+        const btn = event.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '⏳ Capturing...';
+        btn.disabled = true;
+
+        const r = await fetch(`${API}/capture`);
+        const d = await r.json();
+
+        if (!r.ok) throw new Error(d.detail || 'API error');
+
+        const pd = {};
+        
+        // Map Vision Data
+        const v = d.vision || {};
+        if (v.left_shoulder) {
+            pd.vis_l_shoulder_x = v.left_shoulder.x.toFixed(3); pd.vis_l_shoulder_y = v.left_shoulder.y.toFixed(3);
+            pd.vis_r_shoulder_x = v.right_shoulder.x.toFixed(3); pd.vis_r_shoulder_y = v.right_shoulder.y.toFixed(3);
+            pd.vis_l_hip_x = v.left_hip.x.toFixed(3); pd.vis_l_hip_y = v.left_hip.y.toFixed(3);
+            pd.vis_r_hip_x = v.right_hip.x.toFixed(3); pd.vis_r_hip_y = v.right_hip.y.toFixed(3);
+            pd.vis_l_knee_x = v.left_knee.x.toFixed(3); pd.vis_l_knee_y = v.left_knee.y.toFixed(3);
+            pd.vis_r_knee_x = v.right_knee.x.toFixed(3); pd.vis_r_knee_y = v.right_knee.y.toFixed(3);
+            pd.vis_l_ankle_x = v.left_ankle.x.toFixed(3); pd.vis_l_ankle_y = v.left_ankle.y.toFixed(3);
+            pd.vis_r_ankle_x = v.right_ankle.x.toFixed(3); pd.vis_r_ankle_y = v.right_ankle.y.toFixed(3);
+        }
+
+        // Map Angles
+        const a = d.angles || {};
+        if (a.trunk_inclination !== undefined) {
+            pd.angle_trunk_inclination = a.trunk_inclination.toFixed(1);
+            pd.hip_flexion_asymmetry = (Math.abs(a.left_hip_flexion - a.right_hip_flexion)).toFixed(1);
+            pd.knee_flexion_asymmetry = (Math.abs(a.left_knee_flexion - a.right_knee_flexion)).toFixed(1);
+            pd.ankle_dorsiflexion_asymmetry = (Math.abs(a.left_ankle_dorsiflexion - a.right_ankle_dorsiflexion)).toFixed(1);
+        }
+
+        // Map IMU
+        const i = d.imu || {};
+        if (i.acc_x !== undefined) {
+            pd.imu_acc_x = i.acc_x.toFixed(2); pd.imu_acc_y = i.acc_y.toFixed(2); pd.imu_acc_z = i.acc_z.toFixed(2);
+            pd.imu_gyro_x = i.gyro_x.toFixed(2); pd.imu_gyro_y = i.gyro_y.toFixed(2); pd.imu_gyro_z = i.gyro_z.toFixed(2);
+            pd.v_bar_velocity_vertical = (i.v_bar_velocity || 0).toFixed(2);
+            pd.p_bar_power_watts = (i.p_bar_power || 0).toFixed(1);
+            pd.smoothness_jerk = (i.smoothness_jerk || 0).toFixed(2);
+        }
+
+        const dataObj = {};
+        dataObj[`phase${phase}`] = pd;
+        fillPhases(dataObj);
+
+        setTimeout(() => {
+            btn.innerHTML = '✅ Captured!';
+            setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 1000);
+        }, 300);
+
+    } catch (e) {
+        alert('Failed to capture: ' + e.message);
+        event.currentTarget.innerHTML = '❌ Error';
+        setTimeout(() => { event.currentTarget.innerHTML = originalText; event.currentTarget.disabled = false; }, 2000);
+    }
+}
+
+function loadGoodPreset() {
+    document.getElementById('height_cm').value = 176.0;
+    document.getElementById('weight_kg').value = 78.0;
+    document.getElementById('exercise_id').value = '1';
+    document.getElementById('load_kg').value = 95.0;
+    document.getElementById('femur_tibia_ratio').value = 1.17;
+    fillPhases({
+        phase1: {
+            vis_l_shoulder_x:0.308, vis_l_shoulder_y:0.359, vis_r_shoulder_x:0.686, vis_r_shoulder_y:0.359,
+            vis_l_hip_x:0.321, vis_l_hip_y:0.559, vis_r_hip_x:0.668, vis_r_hip_y:0.559,
+            vis_l_knee_x:0.330, vis_l_knee_y:0.713, vis_r_knee_x:0.672, vis_r_knee_y:0.713,
+            vis_l_ankle_x:0.340, vis_l_ankle_y:0.880, vis_r_ankle_x:0.660, vis_r_ankle_y:0.880,
+            angle_trunk_inclination:20.0, hip_flexion_asymmetry:1.5, knee_flexion_asymmetry:1.2, ankle_dorsiflexion_asymmetry:0.8,
+            imu_acc_x:0.12, imu_acc_y:0.05, imu_acc_z:-9.81, imu_gyro_x:0.50, imu_gyro_y:0.10, imu_gyro_z:0.02,
+            v_bar_velocity_vertical:0.0, p_bar_power_watts:0.0, smoothness_jerk:0.05,
+        },
+        phase2: {
+            vis_l_shoulder_x:0.320, vis_l_shoulder_y:0.450, vis_r_shoulder_x:0.680, vis_r_shoulder_y:0.450,
+            vis_l_hip_x:0.335, vis_l_hip_y:0.650, vis_r_hip_x:0.665, vis_r_hip_y:0.650,
+            vis_l_knee_x:0.340, vis_l_knee_y:0.850, vis_r_knee_x:0.660, vis_r_knee_y:0.850,
+            vis_l_ankle_x:0.345, vis_l_ankle_y:0.900, vis_r_ankle_x:0.665, vis_r_ankle_y:0.900,
+            angle_trunk_inclination:35.0, hip_flexion_asymmetry:1.2, knee_flexion_asymmetry:1.5, ankle_dorsiflexion_asymmetry:1.0,
+            imu_acc_x:0.05, imu_acc_y:0.04, imu_acc_z:-9.79, imu_gyro_x:1.45, imu_gyro_y:0.35, imu_gyro_z:-0.05,
+            v_bar_velocity_vertical:0.1, p_bar_power_watts:50.0, smoothness_jerk:0.10,
+        },
+        phase3: {
+            vis_l_shoulder_x:0.315, vis_l_shoulder_y:0.360, vis_r_shoulder_x:0.685, vis_r_shoulder_y:0.360,
+            vis_l_hip_x:0.325, vis_l_hip_y:0.565, vis_r_hip_x:0.670, vis_r_hip_y:0.565,
+            vis_l_knee_x:0.335, vis_l_knee_y:0.720, vis_r_knee_x:0.665, vis_r_knee_y:0.720,
+            vis_l_ankle_x:0.345, vis_l_ankle_y:0.900, vis_r_ankle_x:0.665, vis_r_ankle_y:0.900,
+            angle_trunk_inclination:18.0, hip_flexion_asymmetry:0.9, knee_flexion_asymmetry:0.9, ankle_dorsiflexion_asymmetry:0.7,
+            imu_acc_x:0.085, imu_acc_y:0.045, imu_acc_z:-9.800, imu_gyro_x:1.35, imu_gyro_y:0.22, imu_gyro_z:-0.07,
+            v_bar_velocity_vertical:0.50, p_bar_power_watts:550.0, smoothness_jerk:0.12,
+        }
+    });
+}
+
+function loadBadPreset() {
+    document.getElementById('height_cm').value = 163.0;
+    document.getElementById('weight_kg').value = 60.0;
+    document.getElementById('exercise_id').value = '1';
+    document.getElementById('load_kg').value = 40.0;
+    document.getElementById('femur_tibia_ratio').value = 1.24;
+    fillPhases({
+        phase1: {
+            vis_l_shoulder_x:0.290, vis_l_shoulder_y:0.350, vis_r_shoulder_x:0.710, vis_r_shoulder_y:0.350,
+            vis_l_hip_x:0.300, vis_l_hip_y:0.540, vis_r_hip_x:0.700, vis_r_hip_y:0.540,
+            vis_l_knee_x:0.310, vis_l_knee_y:0.700, vis_r_knee_x:0.690, vis_r_knee_y:0.700,
+            vis_l_ankle_x:0.330, vis_l_ankle_y:0.880, vis_r_ankle_x:0.670, vis_r_ankle_y:0.880,
+            angle_trunk_inclination:45.0, hip_flexion_asymmetry:3.5, knee_flexion_asymmetry:3.2, ankle_dorsiflexion_asymmetry:1.5,
+            imu_acc_x:0.25, imu_acc_y:0.24, imu_acc_z:-9.73, imu_gyro_x:1.60, imu_gyro_y:1.98, imu_gyro_z:0.22,
+            v_bar_velocity_vertical:0.12, p_bar_power_watts:46.9, smoothness_jerk:0.21,
+        },
+        phase2: {
+            vis_l_shoulder_x:0.270, vis_l_shoulder_y:0.480, vis_r_shoulder_x:0.730, vis_r_shoulder_y:0.480,
+            vis_l_hip_x:0.280, vis_l_hip_y:0.660, vis_r_hip_x:0.720, vis_r_hip_y:0.660,
+            vis_l_knee_x:0.290, vis_l_knee_y:0.860, vis_r_knee_x:0.710, vis_r_knee_y:0.860,
+            vis_l_ankle_x:0.320, vis_l_ankle_y:0.900, vis_r_ankle_x:0.680, vis_r_ankle_y:0.900,
+            angle_trunk_inclination:55.0, hip_flexion_asymmetry:4.0, knee_flexion_asymmetry:4.5, ankle_dorsiflexion_asymmetry:2.0,
+            imu_acc_x:0.42, imu_acc_y:0.30, imu_acc_z:-9.50, imu_gyro_x:2.80, imu_gyro_y:2.20, imu_gyro_z:0.50,
+            v_bar_velocity_vertical:0.08, p_bar_power_watts:60.0, smoothness_jerk:0.45,
+        },
+        phase3: {
+            vis_l_shoulder_x:0.295, vis_l_shoulder_y:0.365, vis_r_shoulder_x:0.705, vis_r_shoulder_y:0.365,
+            vis_l_hip_x:0.305, vis_l_hip_y:0.555, vis_r_hip_x:0.695, vis_r_hip_y:0.555,
+            vis_l_knee_x:0.315, vis_l_knee_y:0.715, vis_r_knee_x:0.685, vis_r_knee_y:0.715,
+            vis_l_ankle_x:0.325, vis_l_ankle_y:0.895, vis_r_ankle_x:0.675, vis_r_ankle_y:0.895,
+            angle_trunk_inclination:42.0, hip_flexion_asymmetry:3.3, knee_flexion_asymmetry:3.1, ankle_dorsiflexion_asymmetry:0.9,
+            imu_acc_x:0.38, imu_acc_y:0.28, imu_acc_z:-9.620, imu_gyro_x:2.6, imu_gyro_y:1.9, imu_gyro_z:0.4,
+            v_bar_velocity_vertical:0.12, p_bar_power_watts:95.0, smoothness_jerk:0.70,
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INFERENCE
+// ═══════════════════════════════════════════════════════════════
+function gatherRequest() {
+    const subject = {
+        height_cm: parseFloat(document.getElementById('height_cm').value),
+        weight_kg: parseFloat(document.getElementById('weight_kg').value),
+        femur_tibia_ratio: parseFloat(document.getElementById('femur_tibia_ratio').value),
+    };
+    const session = {
+        exercise_id: parseInt(document.getElementById('exercise_id').value),
+        load_kg: parseFloat(document.getElementById('load_kg').value),
+    };
+    const phases = [];
+    for (let p = 1; p <= 3; p++) {
+        const obj = { rep_phase: p };
+        document.querySelectorAll(`.p${p}`).forEach(inp => {
+            const f = inp.getAttribute('data-field');
+            const v = inp.value.trim();
+            if (v !== '') obj[f] = parseFloat(v);
+        });
+        phases.push(obj);
+    }
+    return { subject, session, phases };
+}
+
+async function runPrediction() {
+    const btn = document.getElementById('predictBtn');
+    const loader = document.getElementById('loader');
+    const errEl = document.getElementById('errorMsg');
+    document.getElementById('resultsPanel').classList.remove('active');
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    loader.style.display = 'block';
+    try {
+        const t0 = performance.now();
+        const resp = await fetch(`${API}/predict`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(gatherRequest()),
+        });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.detail || 'API error');
+        showResults(data, performance.now() - t0);
+    } catch(e) {
+        errEl.textContent = '❌ ' + e.message;
+        errEl.style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        loader.style.display = 'none';
+    }
+}
+
+function showResults(data, clientMs) {
+    const isGood = data.label === 'Good Form';
+    document.getElementById('resultCard').className = `result-card ${isGood ? 'good' : 'bad'}`;
+    const lbl = document.getElementById('resultLabel');
+    lbl.textContent = data.label;
+    lbl.className = `result-label ${isGood ? 'good' : 'bad'}`;
+    document.getElementById('probGood').textContent = data.probability.good_form;
+    document.getElementById('probBad').textContent  = data.probability.bad_form;
+    const bar = document.getElementById('probBar');
+    bar.className = `prob-bar ${isGood ? 'good' : 'bad'}`;
+    const pct = isGood ? data.probability.good_form : data.probability.bad_form;
+    setTimeout(() => { bar.style.width = pct + '%'; }, 50);
+    document.getElementById('latencyInfo').textContent =
+        `Server: ${data.latency_ms}ms | RTT: ${Math.round(clientMs)}ms | Mock: ${data.is_mock} | Thr: ${data.threshold}`;
+    document.getElementById('resultsPanel').classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+    showView('view-init');
+    _initInterval = setInterval(pollInit, 1500);
+    pollInit();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// WEBSOCKET TELEMETRY
+// ═══════════════════════════════════════════════════════════════
+let _ws = null;
+
+function startWebSocket() {
+    if (_ws) return;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    _ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
+    
+    _ws.onmessage = (event) => {
+        try {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'inference_result') {
+                showResults(msg.data, 0);
+            } else if (msg.type === 'telemetry' && msg.data) {
+                const d = msg.data;
+                // IMU Update
+                if (d.imu) {
+                    const m = d.imu;
+                    pushChartData(m);
+                    document.getElementById('vAccX').textContent  = m.acc_x.toFixed(3);
+                    document.getElementById('vAccY').textContent  = m.acc_y.toFixed(3);
+                    document.getElementById('vAccZ').textContent  = m.acc_z.toFixed(3);
+                    document.getElementById('vGyroX').textContent = m.gyro_x.toFixed(2);
+                    document.getElementById('vGyroY').textContent = m.gyro_y.toFixed(2);
+                    document.getElementById('vGyroZ').textContent = m.gyro_z.toFixed(2);
+                    const tag = document.getElementById('chartStatus');
+                    tag.textContent = '● LIVE (WS)';
+                    tag.style.color = 'var(--accent-green)';
+                }
+                
+                // Rep State Update
+                if (d.rep_state !== undefined && typeof REP_PHASES !== 'undefined') {
+                    const label = document.getElementById('repStateLabel');
+                    label.textContent = REP_PHASES[d.rep_state] || "AWAITING EXERCISE";
+                    if (d.rep_state > 0) {
+                        label.style.color = "var(--accent-cyan)";
+                    } else {
+                        label.style.color = "var(--text-muted)";
+                    }
+                }
+
+                // Auto Predict Sync
+                if (d.auto_predict !== undefined) {
+                    const toggle = document.getElementById('autoPredictToggle');
+                    if (toggle) toggle.checked = d.auto_predict;
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
+    
+    _ws.onclose = () => {
+        _ws = null;
+        if (document.getElementById('view-session').classList.contains('active')) {
+            setTimeout(startWebSocket, 2000);
+        }
+    };
+}
+
+function stopWebSocket() {
+    if (_ws) {
+        _ws.close();
+        _ws = null;
+    }
+}
+
+// Intercept session functions to start/stop WS
+const origStartSession = startSession;
+startSession = async function() {
+    await origStartSession();
+    startWebSocket();
+};
+
+const origStopSession = stopSession;
+stopSession = async function() {
+    await origStopSession();
+    stopWebSocket();
+};
+
+pollInit();
+</script>
+</body>
+</html>

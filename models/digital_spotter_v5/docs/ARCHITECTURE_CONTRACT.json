@@ -1,0 +1,231 @@
+{
+  "contract": {
+    "architecture": {
+      "attention_heads": 2,
+      "attention_key_dim": 16,
+      "bilstm_return_sequences": [
+        true,
+        true
+      ],
+      "bilstm_units": [
+        64,
+        32
+      ],
+      "checks": {
+        "attention": true,
+        "bilstm": true,
+        "dense": true,
+        "dropout": true,
+        "inputs": true,
+        "layers": true,
+        "optimizer_loss": true,
+        "output": true,
+        "parameters": true
+      },
+      "context_dense_units": 16,
+      "dropout_rates": [
+        0.25,
+        0.2,
+        0.25,
+        0.15
+      ],
+      "fusion_dense_units": [
+        64,
+        32
+      ],
+      "input_shapes": [
+        [
+          null,
+          3,
+          29
+        ],
+        [
+          null,
+          2
+        ]
+      ],
+      "layer_names": [
+        "temporal_input",
+        "temporal_bilstm_64",
+        "temporal_batch_norm",
+        "temporal_dropout_1",
+        "temporal_bilstm_32",
+        "temporal_dropout_2",
+        "temporal_attention",
+        "attention_residual",
+        "attention_layer_norm",
+        "context_input",
+        "temporal_pooling",
+        "context_dense_16",
+        "fusion_concat",
+        "fusion_dense_64",
+        "fusion_dropout_1",
+        "fusion_dense_32",
+        "fusion_dropout_2",
+        "form_probability"
+      ],
+      "learning_rate": 0.0003000000142492354,
+      "loss": "BinaryCrossentropy",
+      "model_name": "V5_Stage8_SCOPE_FAITHFUL_Gate1",
+      "non_trainable_parameters": 256,
+      "optimizer": "Adam",
+      "output_shape": [
+        null,
+        1
+      ],
+      "parameter_count": 105681,
+      "trainable_parameters": 105425
+    },
+    "context_features": [
+      "Exercise_ID",
+      "Load_kg"
+    ],
+    "excluded_fields": [
+      "V_Bar_Velocity_Vertical",
+      "P_Bar_Power_Watts",
+      "Smoothness_Jerk",
+      "Velocity_Decel_Ratio",
+      "Subject_Height_cm",
+      "Subject_Weight_kg",
+      "Femur_Tibia_Ratio",
+      "BMI"
+    ],
+    "feature_order_differs_from_stage7d": true,
+    "final_training_seed": 42,
+    "frozen_inputs": [
+      {
+        "relative_path": "outputs/v5/manifests/source_hashes_before.json",
+        "sha256": "cd52a0935ab1531196855f349024fd84a2507d0c896925f118e5cbe4bb60f19b",
+        "size_bytes": 6569
+      },
+      {
+        "relative_path": "outputs/v5/manifests/repetition_manifest.csv",
+        "sha256": "2bacc9a0a76c9682d69ef55c9a00d3307e6c19619ee20915fbd04a1f84e4d2fc",
+        "size_bytes": 255307
+      },
+      {
+        "relative_path": "outputs/v5/folds/outer_fold_manifest.csv",
+        "sha256": "2de11c2c6d523712350bb1215c2273875f5281c53ed10b10fbcb94a83059a79c",
+        "size_bytes": 486938
+      },
+      {
+        "relative_path": "outputs/v5/folds/inner_fold_manifest.csv",
+        "sha256": "b162bfcf9147f6206618d8a0e8e8b7302a43231ab31eb986d6923932407b517d",
+        "size_bytes": 1669395
+      },
+      {
+        "relative_path": "outputs/v5/audits/leakage_registry.csv",
+        "sha256": "031edac244fb3f76a90b60448052f4cbe0e38c1e15076e46f30c4bd7d2bfa5c2",
+        "size_bytes": 7846
+      },
+      {
+        "relative_path": "outputs/v5/audits/stage7d_candidate_feature_registry.csv",
+        "sha256": "7e696222360890558f5ad420e7b581efae36fba762b4b99815aa2a649b1ad99c",
+        "size_bytes": 5490
+      },
+      {
+        "relative_path": "outputs/v5/manifests/stage7d_frozen_contract.json",
+        "sha256": "24df9e9728d49ad95542ae33f37531d2b48e7f6b5910e36a5af1cc507ded8956",
+        "size_bytes": 9485
+      },
+      {
+        "relative_path": "outputs/v5/manifests/stage7d_source_integrity_final.json",
+        "sha256": "149ea341434dde3a5a5169aee119ab78890fd057281aa12a7eecc7c1c62dd236",
+        "size_bytes": 335
+      },
+      {
+        "relative_path": "outputs/v5/metrics/stage7d_completion.json",
+        "sha256": "a45be09969dee903c3362bd26992f862305b500bbd747e70ce7d86149e5acea4",
+        "size_bytes": 756
+      },
+      {
+        "relative_path": "outputs/v5/V5_STAGE7C_FINAL_SELECTION_REPORT.md",
+        "sha256": "fb41f5b0c6f31dcd7cc0e21a8f6363bfd073c65a318d2c8337009acca29465d5",
+        "size_bytes": 51635
+      },
+      {
+        "relative_path": "outputs/v5/V5_STAGE7D_SCOPE_PRESERVING_CONFIRMATION_REPORT.md",
+        "sha256": "6b08f1e88a25747d8e73701b6d1f940457d2f11c3d6f0161c8a5c7fd1b78d0e1",
+        "size_bytes": 15801
+      }
+    ],
+    "inner_folds_per_outer": 4,
+    "model_parameters": 105681,
+    "outer_folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "representation": "three real phases, temporal (3,29), context (2,); no indicators or delta branch",
+    "source_hash_reference": "cd52a0935ab1531196855f349024fd84a2507d0c896925f118e5cbe4bb60f19b",
+    "stage": "V5_STAGE8_GATE1",
+    "stage7d_temporal_order": [
+      "Vis_L_Shoulder_X",
+      "Vis_L_Shoulder_Y",
+      "Vis_R_Shoulder_X",
+      "Vis_R_Shoulder_Y",
+      "Vis_L_Hip_X",
+      "Vis_L_Hip_Y",
+      "Vis_R_Hip_X",
+      "Vis_R_Hip_Y",
+      "Vis_L_Knee_X",
+      "Vis_L_Knee_Y",
+      "Vis_R_Knee_X",
+      "Vis_R_Knee_Y",
+      "Vis_L_Ankle_X",
+      "Vis_L_Ankle_Y",
+      "Vis_R_Ankle_X",
+      "Vis_R_Ankle_Y",
+      "Angle_Trunk_Inclination",
+      "Knee_Hip_Coupling_L",
+      "Knee_Hip_Coupling_R",
+      "IMU_Acc_X",
+      "IMU_Acc_Y",
+      "IMU_Acc_Z",
+      "IMU_Gyro_X",
+      "IMU_Gyro_Y",
+      "IMU_Gyro_Z",
+      "IMU_Acc_Magnitude",
+      "Hip_Flexion_Asymmetry",
+      "Knee_Flexion_Asymmetry",
+      "Ankle_Dorsiflexion_Asymmetry"
+    ],
+    "stage8_gate": "preflight only; no training, calibration, threshold fitting or conversion",
+    "stage8_order_follows_user_prompt": true,
+    "target_rule": "V5_REPRO_TARGET = original Class_Binary at Rep_Phase 3; reproduction rule, not corrected ground truth",
+    "temporal_features": [
+      "Vis_L_Shoulder_X",
+      "Vis_L_Shoulder_Y",
+      "Vis_R_Shoulder_X",
+      "Vis_R_Shoulder_Y",
+      "Vis_L_Hip_X",
+      "Vis_L_Hip_Y",
+      "Vis_R_Hip_X",
+      "Vis_R_Hip_Y",
+      "Vis_L_Knee_X",
+      "Vis_L_Knee_Y",
+      "Vis_R_Knee_X",
+      "Vis_R_Knee_Y",
+      "Vis_L_Ankle_X",
+      "Vis_L_Ankle_Y",
+      "Vis_R_Ankle_X",
+      "Vis_R_Ankle_Y",
+      "Angle_Trunk_Inclination",
+      "Hip_Flexion_Asymmetry",
+      "Knee_Flexion_Asymmetry",
+      "Ankle_Dorsiflexion_Asymmetry",
+      "Knee_Hip_Coupling_L",
+      "Knee_Hip_Coupling_R",
+      "IMU_Acc_X",
+      "IMU_Acc_Y",
+      "IMU_Acc_Z",
+      "IMU_Gyro_X",
+      "IMU_Gyro_Y",
+      "IMU_Gyro_Z",
+      "IMU_Acc_Magnitude"
+    ]
+  },
+  "contract_hash": "9a1b67c6596fb90a769f6896eaacd0ae17dd335810c36c6258df75553a4bb2dd"
+}

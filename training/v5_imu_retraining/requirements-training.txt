@@ -1,0 +1,8 @@
+# Observed original V5 training stack; do not install into the Pi/runtime venv.
+tensorflow==2.21.0
+keras==3.13.2
+numpy==2.4.4
+pandas==3.0.2
+scikit-learn==1.8.0
+scipy==1.17.1
+matplotlib==3.10.8

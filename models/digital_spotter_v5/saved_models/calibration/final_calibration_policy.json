@@ -1,0 +1,15 @@
+{
+  "calibrated_brier_on_fit_data": 0.05917546503818129,
+  "calibrated_oof_sha256": "11590c72d2ea896e2a878a28f365cb775741fcbbc957ed67e35a2288fe5621c2",
+  "calibrator_file": "deployment/final_calibrator.joblib",
+  "calibrator_sha256": "9b4984f9fc2584fe0a8fa6356d55f24161c1e9c4e2af93d30624de9ca1ebfe59",
+  "config_hash": "f083f61f2cfd6fa7001b0c99bcf17c94f47573e0f2f883fb74dd2d07e1f934e1",
+  "fit_sample_count": 2018,
+  "fit_source": "all 2,018 selected-loss outer OOF raw probabilities and labels",
+  "independent_generalisation_estimate": false,
+  "policy": "PLATT",
+  "policy_source": "unanimous five Gate 3 development-only Platt decisions",
+  "raw_brier_on_fit_data": 0.0605824237048192,
+  "raw_oof_sha256": "1e115e8e4c535d6209d30d21f1a0b3c16243bbc78eecc53ee2e78a111bff8079",
+  "warning": "Calibrated OOF values use a Platt model fitted to these same OOF labels; Brier here is descriptive fit data only"
+}

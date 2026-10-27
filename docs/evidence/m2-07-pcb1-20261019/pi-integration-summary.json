@@ -1,0 +1,26 @@
+{
+  "status": {
+    "version": "research_status_v1",
+    "session": {"state": "active", "rep_count": 0},
+    "wearable": {"state": "degraded"},
+    "camera": {"state": "unavailable"},
+    "analysis": {
+      "state": "unavailable",
+      "reason": "v5_live_feature_contract_unverified"
+    },
+    "latest_rep": null
+  },
+  "imu_window_state": "degraded",
+  "imu_window_samples": 100,
+  "first_sequence": 11878,
+  "last_sequence": 11977,
+  "window_span_ms": 1979.97,
+  "first_acceleration_m_s2": [-0.515, 0.175, 9.752],
+  "last_acceleration_m_s2": [-0.546, 0.18, 9.802],
+  "throttled": "throttled=0x0",
+  "temperature_c": 69.6,
+  "mock_used": false,
+  "model_scoring_enabled": false,
+  "camera_mode": "on-demand camera-only; browser check completed and stopped",
+  "quality_note": "The existing raw IMU adapter marks uncalibrated samples IMU_DEGRADED; no BLE disconnect is implied. Camera-only mode does not publish pose status."
+}

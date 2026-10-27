@@ -1,0 +1,107 @@
+{
+  "accel_unit": "m/s^2 specific force, gravity retained",
+  "acquisition_hz": 50,
+  "artifacts": {
+    "EXPORT_RESULT.json": "598b4c2643b76c48018ae47b8602df6638bc8cb54ad24f55bd01eb7e29308c9d",
+    "IMU_GENERATION_SPEC.md": "d780f89d31ec94faa36c6271dc91b2fd73f8357c797ad6bcfbfaf618c77fd23c",
+    "README.md": "fe293ce875f17804cebef9ba4c24434778c344892acd5c02e8f6ca79c8c6a8de",
+    "TRAINING_METADATA.json": "d6297d7eb144694803711b6a3d4917fbe3fb0943cf64ccf2576b84d9222c1934",
+    "calibration.json": "e7d7b36d2bae71e5c29d46b9fdd9c07197d4900e925de0075eb8a4ba08a5d3a1",
+    "export_parity.npz": "946968aa899e62a5fcd4a5c70ae42d388fb4c0fa6ee2f3823124392f816dd878",
+    "imu_simulation.json": "f08bc07624ddfa3fea1229cc59b397b7a9c33e03d7653836116b98e1f33a0c70",
+    "inference_fixture.npz": "95c4064fda91714272f57bc8afb397fae895ce39750abf5abc8e70238db04106",
+    "model.keras": "ff7088943ea9797e84e321523b6a09665de2bb5bbab07f87f74fa5b6bfb78465",
+    "model_fp32_builtins_batch1.tflite": "c3da4c5b03461e2e2ecceadfd4081f921777676b4342e87f0153558af71a941c",
+    "preprocessing.json": "b90b1da203d3b5490c841f06907055337748558de2b76970ea9af52848021a53",
+    "threshold.json": "8227f709f685295835a3cd964b4e29b74b347036e1b751af994f6256ce87fdfb"
+  },
+  "calibration": "calibration.json on raw sigmoid probability",
+  "context_features": [
+    "Exercise_ID",
+    "Load_kg"
+  ],
+  "context_shape": [
+    1,
+    2
+  ],
+  "deployment_ready": false,
+  "evaluation": {
+    "outer_grouped_cv": {
+      "accuracy": 0.854806739345887,
+      "bad_form_recall": 0.7653301886792453,
+      "balanced_accuracy": 0.8424941541686825,
+      "brier": 0.11831789248149781,
+      "confusion_matrix": [
+        [
+          1076,
+          94
+        ],
+        [
+          199,
+          649
+        ]
+      ],
+      "f1": 0.8158390949088623,
+      "mcc": 0.701010489560712,
+      "pr_auc": 0.8603919573345702,
+      "precision": 0.873485868102288,
+      "roc_auc": 0.886580793420416,
+      "sample_count": 2018
+    },
+    "provenance": "synthetic profiles only; not real-world accuracy"
+  },
+  "export_code_sha256": "713772d062e1b9bb65c14166111fe7e4db4886415dde8c33a9fa10d72b1653ee",
+  "export_status": "PASS_OFFLINE_NUMERICAL_EXPORT",
+  "flex_required": false,
+  "gyro_unit": "rad/s",
+  "inference_preprocessing": "preprocessing.json; no runtime refitting",
+  "inherited_label_disagreements": 374,
+  "live_scoring_enabled": false,
+  "model_version": "digital_spotter_v5_imu_synthetic_r1",
+  "parameters": 105681,
+  "phase_reducer": "median of pose-associated samples per phase",
+  "real_world_validated": false,
+  "run_hash": "379ae2932ee5081cc3f8e73450adbc8e5a660c58a5c8930548e930cac230bc05",
+  "selected_runtime_artifact": "model_fp32_builtins_batch1.tflite",
+  "sensor_frame": "assumed X-forward/Y-left/Z-up; physical mapping unverified",
+  "source_dataset_sha256": "934925aa40ad7e24e6f34ff12075d76d70d0a97ba1f200374508505323d620ff",
+  "synthetic_data": true,
+  "target": "historical phase-3 Class_Binary",
+  "temporal_features": [
+    "Vis_L_Shoulder_X",
+    "Vis_L_Shoulder_Y",
+    "Vis_R_Shoulder_X",
+    "Vis_R_Shoulder_Y",
+    "Vis_L_Hip_X",
+    "Vis_L_Hip_Y",
+    "Vis_R_Hip_X",
+    "Vis_R_Hip_Y",
+    "Vis_L_Knee_X",
+    "Vis_L_Knee_Y",
+    "Vis_R_Knee_X",
+    "Vis_R_Knee_Y",
+    "Vis_L_Ankle_X",
+    "Vis_L_Ankle_Y",
+    "Vis_R_Ankle_X",
+    "Vis_R_Ankle_Y",
+    "Angle_Trunk_Inclination",
+    "Hip_Flexion_Asymmetry",
+    "Knee_Flexion_Asymmetry",
+    "Ankle_Dorsiflexion_Asymmetry",
+    "Knee_Hip_Coupling_L",
+    "Knee_Hip_Coupling_R",
+    "IMU_Acc_X",
+    "IMU_Acc_Y",
+    "IMU_Acc_Z",
+    "IMU_Gyro_X",
+    "IMU_Gyro_Y",
+    "IMU_Gyro_Z",
+    "IMU_Acc_Magnitude"
+  ],
+  "temporal_shape": [
+    1,
+    3,
+    29
+  ],
+  "threshold": "threshold.json; class 1 if calibrated probability >= threshold"
+}

@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════════
+   frontend/css/main.css
+   Purpose: Global styles, CSS variables, layout grid, typography
+   Author: bimalawijekoon | Version: 1.0.0
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── CSS Variables ─── */
+:root {
+    --bg:         #0a0c0f;
+    --surface:    #111418;
+    --surface-2:  #171b21;
+    --surface-3:  #1d2229;
+    --border:     #1e2328;
+    --border-2:   #2a3038;
+    --accent:     #00e5ff;
+    --accent-dim: rgba(0, 229, 255, 0.1);
+    --accent-mid: rgba(0, 229, 255, 0.3);
+    --accent2:    #7b61ff;
+    --accent2-dim:rgba(123, 97, 255, 0.1);
+    --good:       #00c853;
+    --good-dim:   rgba(0, 200, 83, 0.12);
+    --bad:        #ff4d4d;
+    --bad-dim:    rgba(255, 77, 77, 0.12);
+    --warn:       #ffa726;
+    --text:       #e8eaed;
+    --text-2:     #b0b3b8;
+    --muted:      #5f6368;
+    --font-body:  'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-mono:  'Space Mono', 'Fira Code', monospace;
+    --radius:     10px;
+    --radius-sm:  6px;
+    --radius-lg:  14px;
+    --shadow:     0 2px 12px rgba(0,0,0,0.4);
+    --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-w:  240px;
+    --sidebar-r:  260px;
+    --topbar-h:   52px;
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    overflow: hidden;
+    height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+select, input { font-family: inherit; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+
+/* ─── Typography ─── */
+h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+h2 { font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+/* ─── Layout Grid ─── */
+.topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--topbar-h);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr var(--sidebar-r);
+    gap: 0;
+    height: calc(100vh - var(--topbar-h));
+    margin-top: var(--topbar-h);
+}
+
+.sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sidebar--right {
+    border-right: none;
+    border-left: 1px solid var(--border);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+    .layout {
+        grid-template-columns: 200px 1fr 220px;
+    }
+    :root { --sidebar-w: 200px; --sidebar-r: 220px; }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+    .sidebar { display: none; }
+    .topbar { padding: 0 10px; }
+}
+
+/* ─── Utility ─── */
+.hidden { display: none !important; }
+.mono { font-family: var(--font-mono); }

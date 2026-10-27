@@ -1,0 +1,21 @@
+# Non-secret product configuration example. Runtime secrets and private keys are
+# provisioned outside Git; production paths below must point to protected files.
+schema_version = 1
+profile = "development"
+
+[api]
+host = "127.0.0.1"
+port = 8000
+allowed_origins = []
+
+[paths]
+data_dir = "data"
+runtime_dir = "run"
+database = "data/digital-spotter.sqlite3"
+
+[adapters]
+vision = "simulated"
+imu = "simulated"
+
+[security]
+model_signature_required = true

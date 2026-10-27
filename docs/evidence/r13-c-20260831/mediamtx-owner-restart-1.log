@@ -1,0 +1,33 @@
+2026/08/31 20:26:41 INF MediaMTX v1.9.1
+2026/08/31 20:26:41 INF configuration loaded from /home/pibimalawijekoon/digital-spotter-r13c-candidate-20260829/r13c_mediamtx.yml
+2026/08/31 20:26:41 INF [path picam] [RPI Camera source] started
+2026/08/31 20:26:41 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2026/08/31 20:26:41 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+[0:56:59.592779192] [2850] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:313 [0mlibcamera v0.3.0+65-6ddd79b5-dirty (2024-09-06T11:15:57+00:00)
+[0:56:59.604920950] [2851] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:56:59.607142286] [2851] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:446 [0mRegistered camera /base/soc/i2c0mux/i2c@1/imx219@10 to Unicam device /dev/media0 and ISP device /dev/media4
+[0:56:59.607661537] [2850] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1183 [0mconfiguring streams: (0) 1280x720-YUV420
+[0:56:59.608096568] [2851] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:621 [0mSensor: /base/soc/i2c0mux/i2c@1/imx219@10 - Selected sensor format: 1920x1080-SBGGR10_1X10 - Selected unicam format: 1920x1080-pBAA
+2026/08/31 20:26:42 INF [path picam] [RPI Camera source] ready: 1 track (H264)
+2026/08/31 20:26:45 INF [RTSP] [conn 127.0.0.1:48950] opened
+2026/08/31 20:26:45 INF [RTSP] [session 4b89dd98] created by 127.0.0.1:48950
+2026/08/31 20:26:45 INF [RTSP] [session 4b89dd98] is reading from path 'picam', with TCP, 1 track (H264)
+2026/08/31 20:26:47 INF [RTSP] [session 4b89dd98] destroyed: torn down by 127.0.0.1:48950
+2026/08/31 20:26:47 INF [RTSP] [conn 127.0.0.1:48950] closed: EOF
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed
+encoder_hard_h264_encode(): ioctl(VIDIOC_QBUF) failed

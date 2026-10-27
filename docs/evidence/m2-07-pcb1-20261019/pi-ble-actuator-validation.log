@@ -1,0 +1,62 @@
+[SCAN] Looking for 'ESP32-C3-Test'...
+[ASSERT] PASS — expected BLE name was discovered
+[ASSERT] PASS — device address matches the hardware contract
+[ASSERT] PASS — plain BLE connection is active
+[DEVICE_INFO] protocol=1;firmware=0.9.1-pcb1;hardware=esp32-c3;imu=mpu6500;rate_hz=50
+[ASSERT] PASS — known R9/PCB1 device info is exact
+[STATUS] label=initial value=state=idle;i2c_errors=0;samples_sent=0;uptime_ms=40281
+[ASSERT] PASS — status payload is bounded
+[ASSERT] PASS — status payload matches the strict R9 schema
+[ASSERT] PASS — new connection starts idle
+[ASSERT] PASS — initial status has no I2C errors
+[ASSERT] PASS — idle state emits no stream notifications
+[CONTROL] request=b'stream:start' response='ok:streaming'
+[ASSERT] PASS — control response for b'stream:start' matches
+[STATUS] label=streaming value=state=streaming;i2c_errors=0;samples_sent=7;uptime_ms=41062
+[ASSERT] PASS — status payload is bounded
+[ASSERT] PASS — status payload matches the strict R9 schema
+[ASSERT] PASS — status reports streaming
+[CONTROL] request=b'cue:test' response='error:busy_streaming'
+[ASSERT] PASS — control response for b'cue:test' matches
+[CONTROL] request=b'buzzer:test' response='ok:buzzer_test'
+[ASSERT] PASS — control response for b'buzzer:test' matches
+[CONTROL] request=b'identify' response='ok:identify'
+[ASSERT] PASS — control response for b'identify' matches
+[STATUS] label=streaming-final value=state=streaming;i2c_errors=0;samples_sent=1509;uptime_ms=71093
+[ASSERT] PASS — status payload is bounded
+[ASSERT] PASS — status payload matches the strict R9 schema
+[ASSERT] PASS — manual buzzer and deferred identify do not stop streaming
+[ASSERT] PASS — status samples_sent increases during streaming
+[ASSERT] PASS — stream has no packet/protocol errors
+[ASSERT] PASS — received at least 1350 concurrent stream samples
+[TIMING] samples=1499 sensor_interval_min_us=15011 sensor_interval_max_us=24988 out_of_bound_count=0 first_out_of_bound=[]
+[ASSERT] PASS — sequence has zero gaps
+[ASSERT] PASS — sensor intervals remain within the R6 bound
+[ASSERT] PASS — concurrent notification rate remains approximately 50 Hz
+[ASSERT] PASS — no unexpected disconnect occurred
+[CONTROL] request=b'stream:stop' response='ok:idle'
+[ASSERT] PASS — control response for b'stream:stop' matches
+[ASSERT] PASS — stopped state remains notification-silent
+[CONTROL] request=b'cue:test' response='ok:cue_test'
+[ASSERT] PASS — control response for b'cue:test' matches
+[STATUS] label=final-idle value=state=idle;i2c_errors=0;samples_sent=1511;uptime_ms=78649
+[ASSERT] PASS — status payload is bounded
+[ASSERT] PASS — status payload matches the strict R9 schema
+[ASSERT] PASS — cue test returns to idle
+[ASSERT] PASS — final status has no I2C errors
+[ASSERT] PASS — cue test does not disconnect BLE
+[SUMMARY]
+  duration_seconds=30.000815
+  samples=1499
+  notification_rate_hz=49.965309
+  sequence_gaps=0
+  sensor_interval_min_us=15011
+  sensor_interval_max_us=24988
+  i2c_errors=0
+  samples_sent=1511
+  unexpected_disconnects=0
+  acceleration_raw_ranges=[(-1076, -824), (980, 1240), (16148, 16484)]
+  angular_velocity_raw_ranges=[(-139, -110), (52, 83), (-15, 17)]
+  acceleration_magnitude_g_range=(0.9895, 1.0104)
+[ASSERT] PASS — client disconnected cleanly
+TEST RESULT: PASS

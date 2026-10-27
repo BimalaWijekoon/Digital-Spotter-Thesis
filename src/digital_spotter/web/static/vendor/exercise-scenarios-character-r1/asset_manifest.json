@@ -1,0 +1,46 @@
+[
+  {
+    "scenario_id": "squat_correct",
+    "file": "squat_correct.glb",
+    "bytes": 6200716,
+    "animation": "Squat_Correct",
+    "duration_seconds": 5.3,
+    "human_bones": 65,
+    "equipment_bones": 1,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "scenario_id": "squat_forward_lean",
+    "file": "squat_forward_lean.glb",
+    "bytes": 6200756,
+    "animation": "Squat_ExcessiveForwardLean",
+    "duration_seconds": 5.3,
+    "human_bones": 65,
+    "equipment_bones": 1,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "scenario_id": "deadlift_correct",
+    "file": "deadlift_correct.glb",
+    "bytes": 6200740,
+    "animation": "Deadlift_Correct",
+    "duration_seconds": 5.3,
+    "human_bones": 65,
+    "equipment_bones": 1,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "scenario_id": "deadlift_spinal_rounding",
+    "file": "deadlift_spinal_rounding.glb",
+    "bytes": 6200768,
+    "animation": "Deadlift_SpinalRounding",
+    "duration_seconds": 5.3,
+    "human_bones": 65,
+    "equipment_bones": 1,
+    "required_extensions": [],
+    "external_uris": []
+  }
+]

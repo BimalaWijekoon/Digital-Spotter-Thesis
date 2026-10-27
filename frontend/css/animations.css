@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════
+   frontend/css/animations.css
+   Purpose: CSS animations — pulse, fade, slide, alert, scanline
+   Author: bimalawijekoon | Version: 1.0.0
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes alertFlash {
+    0%   { box-shadow: 0 0 0 0 var(--bad); }
+    50%  { box-shadow: 0 0 24px 4px var(--bad-dim); }
+    100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes phaseTransition {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes scanline {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px var(--accent-dim); }
+    50%      { box-shadow: 0 0 20px var(--accent-mid); }
+}
+
+@keyframes countUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Utility animation classes */
+.anim-fade-in  { animation: fadeIn 0.3s ease-out; }
+.anim-slide-up { animation: slideUp 0.4s ease-out; }
+.anim-pulse    { animation: pulse 2s ease-in-out infinite; }
+.anim-glow     { animation: glow 2s ease-in-out infinite; }

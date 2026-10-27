@@ -1,0 +1,20 @@
+{
+  "width": 1280,
+  "height": 720,
+  "decoded_frames": 98,
+  "frames_in_3s": 88,
+  "dropped_frames": 97,
+  "media_time_advanced_s": 3.0220000000000002,
+  "ready_state": 4,
+  "hardware_simulated": false,
+  "capture_time_callbacks": 75,
+  "finite_capture_times": 0,
+  "mean_capture_to_callback_ms": null,
+  "pose_state": null,
+  "pose_text": null,
+  "passed": true,
+  "viewer": "ui-preview",
+  "player_state": "Camera live",
+  "clean_stop": true,
+  "scope": "functional playback only, not pose, latency or frame-loss acceptance"
+}

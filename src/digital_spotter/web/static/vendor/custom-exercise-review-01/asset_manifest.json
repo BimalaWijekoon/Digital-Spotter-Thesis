@@ -1,0 +1,24 @@
+[
+  {
+    "file": "back_squat_review.glb",
+    "bytes": 1984688,
+    "animation": "BackSquat_Review_01",
+    "duration_seconds": 5.3,
+    "vertices": 25408,
+    "triangles": 48784,
+    "joints": 18,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "file": "conventional_deadlift_review.glb",
+    "bytes": 1984352,
+    "animation": "ConventionalDeadlift_Review_01",
+    "duration_seconds": 5.3,
+    "vertices": 25408,
+    "triangles": 48784,
+    "joints": 18,
+    "required_extensions": [],
+    "external_uris": []
+  }
+]

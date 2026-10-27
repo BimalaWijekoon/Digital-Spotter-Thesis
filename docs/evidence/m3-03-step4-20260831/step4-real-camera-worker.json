@@ -1,0 +1,40 @@
+{
+  "camera": "imx219",
+  "capture_timestamps_strictly_monotonic": true,
+  "effective_pose_fps": 2.969,
+  "elapsed_s": 10.104,
+  "evidence_environment": "E3_pi_hardware_bench",
+  "hardware_simulated": false,
+  "landmark_count_max": 0,
+  "landmark_count_min": 0,
+  "mediapipe_version": "0.10.18",
+  "opencv_version": "4.11.0",
+  "quality_counts": {
+    "vision_degraded": 30
+  },
+  "restart_capture_timestamps": [
+    9892720738000,
+    9893681214000,
+    9894629145000
+  ],
+  "restart_passed": true,
+  "restart_results": [
+    true,
+    true,
+    true
+  ],
+  "worker": {
+    "adapter_mode": "picamera2",
+    "events_published": 30,
+    "frames_received": 30,
+    "is_simulated": false,
+    "last_failure_reason": null,
+    "pose_evaluator_mode": "mediapipe",
+    "poses_low_visibility": 0,
+    "poses_not_found": 30,
+    "processing_failures": 0,
+    "read_timeouts": 0,
+    "source_frames_dropped": 235,
+    "state": "stopped"
+  }
+}

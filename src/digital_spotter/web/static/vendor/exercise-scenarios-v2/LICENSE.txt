@@ -1,0 +1,46 @@
+MIT License
+
+Copyright (c) 2026 Exercise Animation Review contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+PACKAGE SCOPE AND PROVENANCE
+
+The permission above applies to the original GLB geometry, rig, animation
+data, generated preview renders, documentation and authoring source in this
+package, to the extent intellectual property rights exist in those outputs.
+They were generated specifically for the requesting user's research project
+with AI assistance. No stock character, third-party motion capture, downloaded
+exercise model, branded clothing or third-party barbell asset was incorporated.
+This notice does not assert exclusive copyright in AI-generated outputs.
+
+You may embed the GLBs in an offline research dashboard, modify them and
+distribute the resulting application. Keep this license notice with a
+distributed application or asset package, for example in THIRD_PARTY_NOTICES
+or a licenses directory. An on-screen credit is not required by this notice.
+
+Python, NumPy, SciPy, Pillow, the C++ toolchain and FFmpeg were used as
+production tools. Their code/binaries are not included in this package and
+are not runtime dependencies of the GLBs. The preview title overlays use
+DejaVu Sans; no font file is included in the GLBs or package.
+
+The animations are original authored prototypes, not motion capture,
+professional exercise certification, medical advice or biomechanical
+validation. The numerical contact checks establish only the tested geometric
+properties, not the safety or correctness of a person's exercise technique.

@@ -1,0 +1,55 @@
+ESP-ROM:esp32c3-api1-20210207
+Build:Feb  7 2021
+rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fcd5820,len:0x110c
+load:0x403cbf10,len:0xb54
+load:0x403ce710,len:0x2f8c
+entry 0x403cbf10
+
+====================================================
+ Digital Spotter ESP32-C3 ??? Assembled PCB BLE
+====================================================
+[HW] Chip: ESP32-C3 revision 4
+[HW] CPU: 160 MHz
+[HW] Free heap before BLE: 255936 bytes
+[HW] External RGB R=1 G=0 B=3 PWM_ready=1
+[HW] Active buzzer: GPIO 10, timed HIGH/LOW test only
+[HW] Actuator cues: enabled (compile-time DS_ENABLE_ACTUATOR_CUES=1)
+[FW] Version: 0.9.1-pcb1, protocol: 1
+[TEST] Wi-Fi/MQTT/security are intentionally not initialized
+[TEST] PCB1 retains the R9 BLE/data contract on the new PCB
+[TEST] Raw values are not calibrated or approved model inputs
+[IMU] I2C start SDA=GPIO18 SCL=GPIO19 clock_hz=100000 address=0x68
+[IMU] WHO_AM_I=0x70 exact MPU6500 identity PASS
+[IMU] verified wake_clock=0x01
+[IMU] verified enable_axes=0x00
+[IMU] verified dlpf=0x03
+[IMU] verified sample_rate=0x13
+[IMU] verified gyro_range=0x00
+[IMU] verified accel_range=0x00
+[IMU] profile rate=50Hz accel=+/-2g gyro=+/-250dps DLPF=3
+[IMU] BLE stream uses real MPU6500 raw samples
+[IMU_STATUS] ready=1 address=0x68 who_am_i=0x70 rate_hz=50 accel_range_g=2 gyro_range_dps=250 dlpf=3 samples=0 retries=0 errors=0 bus_failures=0 consecutive_errors=0 ble_payload=real_mpu6500
+[BLE] ADVERTISING reason=boot
+[BLE] Name: ESP32-C3-Test
+[BLE] Address: 50:78:7d:92:61:1a
+[BLE] Service UUID: 4fafc201-1fb5-459e-8fcc-c5c9c331914b
+[BLE] Device-info characteristic UUID: e193acb8-25ef-422c-b3e5-972eae75b8ea
+[BLE] Device-info characteristic properties: READ only
+[BLE] Control characteristic UUID: 7f725422-d560-4852-96d8-3407f417b1d8
+[BLE] Control properties: READ | WRITE, max request: 48 bytes
+[BLE] Stream characteristic UUID: 772af3c3-f1f9-43b0-8230-4dff401446ea
+[BLE] Stream properties: NOTIFY only
+[BLE] Status characteristic UUID: 7f07eb06-7be4-49a1-b952-1ed033b0dfc7
+[BLE] Status properties: READ only, bounded ASCII
+[BLE] Stream payload: 20-byte little-endian real MPU6500 raw data
+[BLE] Stream rate: 50 Hz; raw values are not calibrated
+[BLE] Stream control: explicit stream:start / stream:stop
+[BLE] Pairing/bonding/encrypted permissions: OFF
+[LED] Blue breathing = waiting for a connection
+[ACTUATOR] Boot cue=white duration_ms=800
+[HW] Free heap after BLE: 176356 bytes
+[READY] Open the Pi client and connect to ESP32-C3-Test
+[IMU_STATUS] ready=1 address=0x68 who_am_i=0x70 rate_hz=50 accel_range_g=2 gyro_range_dps=250 dlpf=3 samples=250 retries=0 errors=0 bus_failures=0 consecutive_errors=0 ble_payload=real_mpu6500

@@ -1,0 +1,16 @@
+{
+  "adapter_mode": "picamera2",
+  "events_published": 94,
+  "frames_received": 94,
+  "health_events_published": 16,
+  "health_publish_failures": 0,
+  "is_simulated": false,
+  "last_failure_reason": null,
+  "pose_evaluator_mode": "mediapipe",
+  "poses_low_visibility": 0,
+  "poses_not_found": 94,
+  "processing_failures": 0,
+  "read_timeouts": 0,
+  "source_frames_dropped": 310,
+  "state": "stopped"
+}

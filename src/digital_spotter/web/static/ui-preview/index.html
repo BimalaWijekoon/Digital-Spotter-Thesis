@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#fafaf8">
+  <title>Digital Spotter</title>
+  <link rel="stylesheet" href="styles.css?v=20261025-appliance-r1">
+  <link rel="stylesheet" href="demo.css?v=20261026-pose-guide">
+  <script type="importmap">{"imports":{"three":"../vendor/three-r180/three.module.min.js"}}</script>
+  <script defer src="../vendor/mediamtx-v1.12.3/reader.js"></script>
+  <script type="module" src="camera-preview.mjs?v=20261026-tailnet-camera-r11"></script>
+</head>
+<body data-mobile-view="movement">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="app-shell">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="brand" aria-label="Digital Spotter">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" focusable="false">
+              <path d="M10 10h7M10 10v7M30 10h-7M30 10v7M10 30h7M10 30v-7M30 30h-7M30 30v-7" />
+              <path d="M15 23.5 19 16l3 5 3-4.5" />
+              <circle cx="25" cy="16.5" r="2" />
+            </svg>
+          </span>
+          <span class="brand__wordmark">digital<span>spotter</span></span>
+        </div>
+        <div id="network-chip" class="network-chip" data-state="unavailable" role="status" aria-live="polite"><span aria-hidden="true"></span><strong id="network-chip-label">Wi-Fi —</strong></div>
+        <div class="page-tabs" role="tablist" aria-label="Main sections">
+          <button id="workout-tab" type="button" role="tab" aria-selected="true" aria-controls="workout-view" tabindex="0" data-page="workout">Workout</button>
+          <button id="demo-tab" type="button" role="tab" aria-selected="false" aria-controls="demo-view" tabindex="-1" data-page="demo">Demo</button>
+          <button id="devices-tab" type="button" role="tab" aria-selected="false" aria-controls="devices-view" tabindex="-1" data-page="devices">Devices</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="workspace">
+      <section class="page-heading" aria-labelledby="page-title">
+        <h1 id="page-title">Workout</h1>
+      </section>
+
+      <div id="workout-view" class="workout-view" role="tabpanel" aria-labelledby="workout-tab">
+      <section class="readiness-band" aria-label="Device readiness">
+        <div class="readiness-band__label"><strong>Device status</strong></div>
+        <div class="readiness-item"><span class="readiness-item__symbol" aria-hidden="true">◉</span><span><strong>Camera</strong><small id="camera-readiness">Not checked</small></span></div>
+        <div class="readiness-item"><span class="readiness-item__symbol" aria-hidden="true">⌁</span><span><strong>Wearable</strong><small id="wearable-readiness">Unavailable</small></span></div>
+        <div class="readiness-item"><span class="readiness-item__symbol" aria-hidden="true">◇</span><span><strong>Analysis</strong><small id="analysis-readiness">Unavailable</small></span></div>
+      </section>
+
+      <div class="mobile-view-tabs" role="group" aria-label="Choose workout area">
+        <button type="button" data-view="movement" aria-controls="camera-panel" aria-pressed="true">Movement</button>
+        <button type="button" data-view="imu" aria-controls="imu-panel" aria-pressed="false">IMU</button>
+        <button type="button" data-view="set" aria-controls="set-panel" aria-pressed="false">Set</button>
+        <button type="button" data-view="feedback" aria-controls="feedback-panel" aria-pressed="false">Feedback</button>
+      </div>
+
+      <div class="workout-grid">
+        <section id="camera-panel" class="camera-panel panel" aria-labelledby="camera-title">
+          <div class="panel__header">
+            <h2 id="camera-title">Camera</h2>
+            <div class="camera-panel__controls"><span id="camera-preview-status" role="status">Not connected</span><button id="camera-preview-start" type="button">Connect camera</button><button id="camera-preview-stop" type="button" disabled>Stop camera</button></div>
+          </div>
+          <div class="camera-stage" data-camera-state="idle" aria-label="Camera view area">
+            <video id="camera-preview-video" muted autoplay playsinline hidden aria-label="Live camera"></video>
+            <canvas id="pose-guide-canvas" class="pose-guide-canvas" hidden aria-hidden="true"></canvas>
+            <span id="pose-guide-status" class="pose-guide-status" hidden title="Latest pose only; not matched to the displayed video frame"></span>
+            <span class="camera-stage__corner camera-stage__corner--tl" aria-hidden="true"></span>
+            <span class="camera-stage__corner camera-stage__corner--tr" aria-hidden="true"></span>
+            <span class="camera-stage__corner camera-stage__corner--bl" aria-hidden="true"></span>
+            <span class="camera-stage__corner camera-stage__corner--br" aria-hidden="true"></span>
+            <div id="camera-preview-placeholder" class="camera-stage__center">
+              <span class="camera-stage__glyph" aria-hidden="true">◎</span>
+              <strong>Camera view</strong>
+            </div>
+            <div id="person-pose-test-overlay" class="person-pose-test-overlay" hidden>
+              <strong id="person-pose-test-seconds">20</strong>
+              <span id="person-pose-test-phase">Move into frame</span>
+            </div>
+            <span id="pose-readiness" class="camera-stage__pose">Pose —</span>
+          </div>
+          <div class="session-strip" role="group" aria-label="In-set controls">
+            <div class="session-strip__metrics">
+              <span class="session-metric"><small>Reps</small><strong id="rep-count">—</strong></span>
+              <span class="session-metric"><small>Time</small><strong id="set-timer">--:--</strong></span>
+            </div>
+            <div class="session-strip__actions">
+              <button id="pause-set" type="button" disabled>Pause</button>
+              <button id="stop-set" type="button" disabled>Stop</button>
+            </div>
+          </div>
+          <div class="camera-panel__footer">
+            <button id="person-pose-test-start" type="button" disabled>Test pose · 30 s</button>
+            <span id="person-pose-test-status" role="status">Checking test availability</span>
+            <a id="person-pose-test-result" href="/api/research/person-pose-test/latest" hidden>Saved result</a>
+          </div>
+        </section>
+
+        <div class="side-stack">
+          <section id="feedback-panel" class="panel feedback-panel" aria-labelledby="feedback-title">
+            <div class="panel__header"><h2 id="feedback-title">Feedback</h2></div>
+            <div class="feedback-panel__body">
+              <div class="feedback-panel__main">
+                <div class="feedback-panel__number" aria-hidden="true">—</div>
+                <div><small>Model result</small><strong id="result-label">Unavailable</strong><small id="analysis-detail" class="feedback-panel__detail">Live inputs unavailable</small></div>
+              </div>
+              <div class="feedback-panel__meta">
+                <span>Bad-form probability <strong id="bad-form-probability">—</strong></span>
+                <span>Model <strong id="model-version">—</strong></span>
+              </div>
+            </div>
+          </section>
+
+          <section id="set-panel" class="panel set-panel" aria-labelledby="set-title">
+            <div class="panel__header"><h2 id="set-title">Set</h2></div>
+            <form id="set-setup" class="set-panel__body" autocomplete="off">
+              <div class="setup-fields">
+                <div class="setup-field">
+                  <label for="exercise-select">Exercise</label>
+                  <select id="exercise-select" name="exercise" required>
+                    <option value="">Choose</option>
+                    <option value="0">Squat</option>
+                    <option value="1">Deadlift</option>
+                  </select>
+                </div>
+                <div class="setup-field">
+                  <label for="load-kg">Load (kg)</label>
+                  <input id="load-kg" name="load_kg" type="number" inputmode="decimal" min="0" step="any" placeholder="0" required>
+                </div>
+              </div>
+              <div class="setup-actions">
+                <p id="setup-message" class="setup-message" role="status" aria-live="polite">Choose exercise and load</p>
+                <div class="setup-action-buttons">
+                  <button id="download-set-json" class="setup-download" type="button" hidden>Download JSON</button>
+                  <button id="start-set" class="setup-start" type="submit" aria-describedby="setup-message" disabled>Start set</button>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <section id="imu-panel" class="panel imu-panel" aria-labelledby="imu-title">
+          <div class="panel__header"><h2 id="imu-title">IMU motion</h2><span id="imu-data-status" class="imu-panel__status">No data</span></div>
+          <div class="imu-panel__plots">
+            <div class="imu-plot" role="img" aria-label="Acceleration: no live IMU data">
+              <canvas id="acceleration-chart" aria-hidden="true"></canvas>
+              <span class="imu-plot__label">Acceleration · m/s²</span>
+            </div>
+            <div class="imu-plot" role="img" aria-label="Gyroscope: no live IMU data">
+              <canvas id="gyroscope-chart" aria-hidden="true"></canvas>
+              <span class="imu-plot__label">Gyroscope · rad/s</span>
+            </div>
+          </div>
+        </section>
+      </div>
+      </div>
+
+      <section id="demo-view" class="demo-view" role="tabpanel" aria-labelledby="demo-tab" hidden>
+        <section class="readiness-band" aria-label="Demo connections">
+          <div class="readiness-band__label"><strong>Device status</strong><small class="demo-muted">Actual connections</small></div>
+          <div class="readiness-item"><span class="readiness-item__symbol" aria-hidden="true">◉</span><span><strong>Core</strong><small id="demo-pi-status">Not checked</small></span></div>
+          <div class="readiness-item"><span class="readiness-item__symbol" aria-hidden="true">⌁</span><span><strong>Wearable</strong><small id="demo-wearable-status">Not checked</small></span></div>
+          <div class="readiness-item"><span class="readiness-item__symbol" aria-hidden="true">◇</span><span><strong>Model</strong><small id="demo-model-status">Not checked</small></span></div>
+        </section>
+        <div class="demo-grid">
+          <section class="panel demo-stage-panel" aria-labelledby="demo-movement-title">
+            <div class="panel__header"><h2 id="demo-movement-title">Movement</h2><span id="demo-render-status" class="demo-muted">Not started</span></div>
+            <div class="demo-stage">
+              <canvas id="demo-canvas" role="img" aria-label="Illustrative 3D human exercise animation"></canvas>
+              <canvas id="demo-pose-guide-canvas" class="demo-pose-guide-canvas" aria-hidden="true"></canvas>
+              <span id="demo-pose-guide-status" class="demo-pose-guide-status">Simulated pose guide</span>
+              <span id="demo-scenario-label" class="demo-scenario-label">Squat · Correct form</span>
+              <div id="demo-animation-missing" class="demo-animation-missing" role="status" hidden><strong>Incorrect-form animation not supplied</strong><small>Replay inputs and model remain available.</small></div>
+              <span id="demo-motion-source" class="demo-source-label">Predefined motion · separate replay inputs</span>
+            </div>
+            <div class="session-strip">
+              <span class="session-metric"><small>Reps</small><strong id="demo-reps">0 / 3</strong></span>
+              <span class="session-metric"><small>Time</small><strong id="demo-elapsed">0.0 s</strong></span>
+              <span class="session-metric" title="Replay input display slot, not a measured motion phase"><small>Input phase</small><strong id="demo-phase">—</strong></span>
+            </div>
+          </section>
+          <div class="side-stack">
+            <section class="panel feedback-panel" aria-labelledby="demo-feedback-title">
+              <div class="panel__header"><h2 id="demo-feedback-title">Feedback</h2><span class="demo-mode-label">Demo</span></div>
+              <div class="feedback-panel__body">
+                <div class="feedback-panel__main">
+                  <div class="feedback-panel__number" aria-hidden="true">—</div>
+                  <div><small>Model result</small><strong id="demo-result">Not run</strong><small id="demo-result-detail" class="feedback-panel__detail">Synthetic replay · no wearable feedback</small></div>
+                </div>
+                <div class="feedback-panel__meta"><span>Bad-form probability <strong id="demo-probability">—</strong></span><span>Input <strong>Synthetic replay</strong></span></div>
+              </div>
+            </section>
+            <section class="panel set-panel" aria-labelledby="demo-setup-title">
+              <div class="panel__header"><h2 id="demo-setup-title">Scenario</h2><span class="demo-muted">Curated replay</span></div>
+              <div class="set-panel__body demo-controls">
+                <div class="setup-fields">
+                  <div class="setup-field"><label for="demo-exercise">Exercise</label><select id="demo-exercise"><option value="squat">Squat</option><option value="deadlift">Deadlift</option></select></div>
+                  <div class="setup-field"><label for="demo-form">Form scenario</label><select id="demo-form"><option value="correct">Correct form</option><option value="incorrect">Incorrect form</option></select></div>
+                  <div class="setup-field"><label for="demo-load">Replay kg</label><input id="demo-load" type="number" readonly title="Recorded fixture load; not overridden for inference"></div>
+                </div>
+                <div class="demo-actions"><button id="demo-start" class="setup-start" type="button" disabled>Start demo</button><button id="demo-pause" type="button" disabled>Pause</button><button id="demo-reset" type="button">Reset</button></div>
+                <p id="demo-playback-status" class="demo-muted" role="status">Ready · 3 repetitions</p>
+              </div>
+            </section>
+          </div>
+          <section class="panel imu-panel" aria-labelledby="demo-imu-title">
+            <div class="panel__header"><h2 id="demo-imu-title">IMU motion</h2><span id="demo-imu-status" class="demo-muted">Replay · ready</span></div>
+            <div class="demo-imu-toolbar">
+              <select id="demo-imu-source" aria-label="IMU chart source"><option value="replay">Replay inputs</option><option value="live">Live wearable</option></select>
+              <span class="demo-imu-legend" aria-label="Chart axes"><span>X</span><span>Y</span><span>Z</span></span>
+            </div>
+            <div class="imu-panel__plots">
+              <div class="imu-plot" role="img" aria-label="Acceleration: no live data"><canvas id="demo-acceleration" aria-hidden="true"></canvas><span class="imu-plot__label">Acceleration · m/s²</span></div>
+              <div class="imu-plot" role="img" aria-label="Gyroscope: no live data"><canvas id="demo-gyroscope" aria-hidden="true"></canvas><span class="imu-plot__label">Gyroscope · rad/s</span></div>
+            </div>
+            <p id="demo-imu-note" class="demo-muted demo-imu-note">3 phase medians · not a live stream</p>
+          </section>
+        </div>
+      </section>
+
+      <section id="devices-view" class="devices-view" role="tabpanel" aria-labelledby="devices-tab" hidden>
+        <div class="devices-grid">
+          <section class="device-card panel" aria-labelledby="device-camera-title">
+            <div class="device-card__heading">
+              <span class="device-card__icon" aria-hidden="true">◉</span>
+              <h2 id="device-camera-title">Camera</h2>
+              <span id="devices-camera-status" class="device-card__state">Not checked</span>
+            </div>
+            <div class="device-card__checks">
+              <div><span>Video feed</span><strong id="devices-video-status">Not checked</strong></div>
+              <div><span>Pose tracking</span><strong id="devices-pose-status">Unavailable</strong></div>
+              <div><span>Pi Wi-Fi</span><strong id="devices-network-status">Not checked</strong></div>
+            </div>
+          </section>
+          <section class="device-card panel" aria-labelledby="device-wearable-title">
+            <div class="device-card__heading">
+              <span class="device-card__icon" aria-hidden="true">⌁</span>
+              <h2 id="device-wearable-title">Wearable</h2>
+              <span id="devices-wearable-status" class="device-card__state">Unavailable</span>
+            </div>
+            <div class="device-card__checks">
+              <div><span>BLE link</span><strong id="devices-ble-status">Not checked</strong></div>
+              <div><span>IMU data</span><strong id="devices-imu-status">Unavailable</strong></div>
+            </div>
+          </section>
+          <section class="device-card panel" aria-labelledby="device-analysis-title">
+            <div class="device-card__heading">
+              <span class="device-card__icon" aria-hidden="true">◇</span>
+              <h2 id="device-analysis-title">Analysis</h2>
+              <span id="devices-analysis-status" class="device-card__state">Unavailable</span>
+            </div>
+            <div class="device-card__checks">
+              <div><span>Model</span><strong id="devices-model-status">Not ready</strong></div>
+              <div><span>Sync</span><strong id="devices-sync-status">Not verified</strong></div>
+            </div>
+            <div id="test-input-output" class="test-input-output" hidden>
+              <span id="result-source" class="test-input-output__source">Test input</span>
+              <div><span>Model class</span><strong id="test-input-class">—</strong></div>
+              <div><span>Class 1 probability</span><strong id="test-input-probability">—</strong></div>
+              <div><span>Model version</span><strong id="test-input-model">—</strong></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <script type="module" src="preview.js?v=20261027-set-export"></script>
+</body>
+</html>

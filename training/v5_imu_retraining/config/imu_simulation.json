@@ -1,0 +1,28 @@
+{
+  "version": "v5-imu-synthetic-r1",
+  "seed": 42,
+  "sample_hz": 50,
+  "gravity_m_s2": 9.80665,
+  "accel_range_g": 2,
+  "gyro_range_dps": 250,
+  "accel_lsb_per_g": 16384,
+  "gyro_lsb_per_dps": 131,
+  "phase_fractions": [0.0, 0.35, 0.45, 1.0],
+  "rep_duration_s": [3.2, 5.0],
+  "pose_rate_hz": [6.0, 12.0],
+  "squat_sensor_vertical_travel_m": [0.25, 0.50],
+  "deadlift_sensor_vertical_travel_m": [0.20, 0.45],
+  "sensor_horizontal_travel_m": [0.01, 0.08],
+  "trunk_to_sensor_pitch_factor": [0.65, 1.0],
+  "fallback_trunk_inclination_deg": {
+    "0": [160.0, 135.0, 172.0],
+    "1": [108.0, 122.0, 173.0]
+  },
+  "mount_max_angle_deg": 5.0,
+  "cross_plane_max_angle_deg": 2.0,
+  "accel_bias_max_m_s2": 0.05,
+  "gyro_bias_max_rad_s": 0.005,
+  "accel_noise_std_m_s2": 0.025,
+  "gyro_noise_std_rad_s": 0.001,
+  "gyro_rep_drift_max_rad_s": 0.002
+}

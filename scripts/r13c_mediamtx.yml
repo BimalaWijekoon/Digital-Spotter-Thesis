@@ -1,0 +1,26 @@
+# Isolated R13-C comparison configuration. This does not replace the Pi's
+# existing MediaMTX configuration.
+logLevel: info
+
+rtsp: yes
+rtspAddress: :8554
+
+rtmp: no
+hls: no
+srt: no
+
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+
+paths:
+  picam:
+    source: rpiCamera
+    rpiCameraCamID: 0
+    rpiCameraWidth: 1280
+    rpiCameraHeight: 720
+    rpiCameraFPS: 30
+    rpiCameraBitrate: 2500000
+    rpiCameraProfile: main
+    rpiCameraLevel: "4.1"
+    rpiCameraIDRPeriod: 30

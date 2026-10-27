@@ -1,0 +1,17 @@
+2026-08-28 owner observation
+
+Actual reset/boot:
+- owner tapped RESET/EN
+- white boot cue seen
+- blue advertising cue seen
+
+Automated cue demonstration, repeated twice:
+- green connected
+- white, blue, green, cyan, orange, red test sequence
+- steady cyan streaming
+- one short GPIO 10 beep
+- green idle
+- orange disconnect
+- blue advertising
+
+Owner confirmation: "yup exactly as u told"

@@ -1,0 +1,43 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+logs/*.log
+data/*.db
+.env
+venv/
+.venv/
+.vscode/
+*.egg-info/
+dist/
+build/
+firmware/**/build*/
+firmware/**/*.elf
+firmware/**/*.map
+firmware/**/*.merged.bin
+firmware/**/*.bootloader.bin
+firmware/**/*.partitions.bin
+firmware/imu_pcb_bringup/local_backups/
+.arduino-temporary/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.swp
+*.swo
+*~
+
+# Hardware credentials — never commit local overrides
+firmware/**/secrets.local.h
+firmware/**/secrets.h
+
+# Local research training: keep copied data/source and generated artifacts private.
+/training/v5_imu_retraining/reference/
+/training/v5_imu_retraining/data/
+/training/v5_imu_retraining/outputs/
+/training/v5_imu_retraining/.venv*/
+/training/v5_imu_retraining/.mplconfig/
+
+# Local evidence edit checkpoints; keep only the finalized questionnaire.
+/docs/evidence/Gym_Spotter_Final_Real_World_Testing_Questionnaire.before-*.xlsx

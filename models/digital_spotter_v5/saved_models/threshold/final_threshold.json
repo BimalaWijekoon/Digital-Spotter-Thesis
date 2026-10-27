@@ -1,0 +1,20 @@
+{
+  "calibrated_oof_sha256": "11590c72d2ea896e2a878a28f365cb775741fcbbc957ed67e35a2288fe5621c2",
+  "calibration_policy": "PLATT",
+  "calibrator_sha256": "9b4984f9fc2584fe0a8fa6356d55f24161c1e9c4e2af93d30624de9ca1ebfe59",
+  "config_hash": "f083f61f2cfd6fa7001b0c99bcf17c94f47573e0f2f883fb74dd2d07e1f934e1",
+  "f1": 0.9252839210998207,
+  "f2": 0.9177140147023951,
+  "historical_v4_threshold_reused": false,
+  "independent_generalisation_estimate": false,
+  "n": 2018,
+  "objective": "maximize bad-form F1; deterministic ties nearest 0.5 then lower",
+  "outer_oof_labels_used_for_deployment_threshold": true,
+  "pr_auc": 0.9163122100198652,
+  "precision": 0.9381818181818182,
+  "recall": 0.9127358490566038,
+  "source": "global calibrated selected-loss OOF probabilities",
+  "threshold": 0.20549274582373653,
+  "threshold_sweep_sha256": "cc8a70d8f6a12998936cf45b42d90ac973f0ca5e8354f5400af6d9bbc87bd6f6",
+  "warning": "Deployment threshold is tuned on OOF labels also used for global Platt fit; not an independent performance estimate"
+}

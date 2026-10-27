@@ -1,0 +1,171 @@
+{
+  "file_count": 33,
+  "files": [
+    {
+      "relative_path": "V5_IMPLEMENTATION_SPEC_BiLSTM_PRIMARY.md",
+      "sha256": "2f1f4b01789a3f6a84350aeaf4de43449ae7e55d1d72563cd4ddf9fbcf4b9e66",
+      "size_bytes": 25574
+    },
+    {
+      "relative_path": "Datasets v2/master_dataset.csv",
+      "sha256": "68b16c054e2435c2b3b07f5b289fa02d18404f309403929ba610d8bab1f6b466",
+      "size_bytes": 2090476
+    },
+    {
+      "relative_path": "Datasets v2/preprocessed_dataset.csv",
+      "sha256": "5688023706338499a6dac05f8bc53faf4947b6cea65b44cd42c569186eb6261a",
+      "size_bytes": 1915791
+    },
+    {
+      "relative_path": "Datasets v2/vision_data.csv",
+      "sha256": "e6ab6a521e90ad9553468aeeb03905523c62e57eb75d18f3d93d0129c7784983",
+      "size_bytes": 1504470
+    },
+    {
+      "relative_path": "Datasets v2/imu_data.csv",
+      "sha256": "f1826a11784f6557ffe667147900f33e07203ccb65045fcf9d238400c9a738f2",
+      "size_bytes": 546347
+    },
+    {
+      "relative_path": "Datasets v2/subject_meta.csv",
+      "sha256": "d8e466d3d33e809cb8b90d20bb10076e8ea7b2ccfa59d65038b9d760eb6e2f9d",
+      "size_bytes": 1060
+    },
+    {
+      "relative_path": "Datasets v2/gym_fusion_model_training_v4.ipynb",
+      "sha256": "0bbf153d80a26cc8f9acb6f1eb1162b92da98644b1409584cd0ef3cccd87f3e0",
+      "size_bytes": 1883723
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/best_lstm_checkpoint.keras",
+      "sha256": "fc995e914a9b2c59fb7a46a545b69b64315f42a0779772ee5e8cc0ccb701c3fa",
+      "size_bytes": 5275297
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/deployment_config.save",
+      "sha256": "1d4efd32bd2010ec2a4ecda8f7feb75225bc60d97696bcee0e3508de41587b75",
+      "size_bytes": 942
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/feature_medians.save",
+      "sha256": "adada7b0ee4ad11ca63d6adc76d7fdf9e6321035fe14f761a6e11d56efcfd3e0",
+      "size_bytes": 1066
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/lstm_gym_model.keras",
+      "sha256": "fc995e914a9b2c59fb7a46a545b69b64315f42a0779772ee5e8cc0ccb701c3fa",
+      "size_bytes": 5275297
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/lstm_gym_model_full.tflite",
+      "sha256": "2d1f0b04948d7048767c69678311de4dff5d790ae64387223f49c8c1fe1b66d8",
+      "size_bytes": 1768756
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/lstm_gym_model_quantized.tflite",
+      "sha256": "609e967e15840bb53db5e98fcf4894a5de74d071e7c0fe84b90e8569542b17df",
+      "size_bytes": 536488
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/model_comparison.csv",
+      "sha256": "6bc9bb7136ad579a89c5ff3d7cf6f8c68b60dae6aac5dfb6263f5ec5126b7b85",
+      "size_bytes": 384
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/random_forest_model.joblib",
+      "sha256": "26bfb4bdef2842d5684dc6b92fdb273b3c0a9781fe8bc4f1f169346c7e82a326",
+      "size_bytes": 2695993
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/scaler.save",
+      "sha256": "c577b57752749a8866e5e9d9db7b0ec5799538966bd8be2d83a49d4063120247",
+      "size_bytes": 1543
+    },
+    {
+      "relative_path": "Datasets v2/saved_models/winsor_bounds.save",
+      "sha256": "20c38ea396f43fa000026293fc5513fc15024cd40b1c049816f038439e51d024",
+      "size_bytes": 251
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/00_null_cooccurrence.png",
+      "sha256": "2c97be8ba57dfd0d9f26928b5f5468ccc8eb43abe35023695ddc26c082065d3a",
+      "size_bytes": 208647
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/01_leakage_detection.png",
+      "sha256": "a7ed499bc4df9cb30a40d2529f49201af347ea43f0f50c07fd88352cda8d34a9",
+      "size_bytes": 109980
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/06a_class_balance.png",
+      "sha256": "2b1dfd12ffc4616334a0f64e475848327d56ed2e5b0d456aa4615259a6ef1dc3",
+      "size_bytes": 61598
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/06b_exercise_error_distribution.png",
+      "sha256": "9ed33a3b2f12255936ee3eb6a1e2bb9220ba94d2222567978cdd700aeae30832",
+      "size_bytes": 109146
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/06c_violin_angles.png",
+      "sha256": "d7ad9d19ccdc9f55db4db73378cb895dc2bbfbe6775afa3ea963fc4e61073be6",
+      "size_bytes": 189973
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/06d_fatigue_trajectory.png",
+      "sha256": "d618fc456587473119c137e6c5bc61dc5f1bd575e2f0ec2a7b371ebcfc69950c",
+      "size_bytes": 74595
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/06e_radar_error_fingerprints.png",
+      "sha256": "750c0f1b1cdb92b09d835c09059eea1d6189560780e8162933d5ab0ce6f37042",
+      "size_bytes": 407308
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/09_rf_evaluation.png",
+      "sha256": "20e6a466d37c7322d46582972767f9287b2dcdc7bcc3a00c3ebf95268811a843",
+      "size_bytes": 108890
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/10_lstm_training_curves.png",
+      "sha256": "0c88054ab22ab43f8369475dbe68a5ee5e647912c54d59d107e896d422b0505c",
+      "size_bytes": 136006
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/10b_pr_threshold.png",
+      "sha256": "778376a948e699ea33c3b168903a89c14a6592b5803cf34ce1506f022c3fa155",
+      "size_bytes": 60205
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/11_attention_weights.png",
+      "sha256": "e7773dd57571e19ab35c5f5c8b70d3d5b9aa098dea7928344c798e9a53e22028",
+      "size_bytes": 130030
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/11_lstm_evaluation.png",
+      "sha256": "a2c82404eeb04251e7f2603cc85095a9505ce0923af91895b5cc5ce323631ccf",
+      "size_bytes": 72384
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/12_model_comparison.png",
+      "sha256": "24472d70dc2b953da033bd60c39f3658cae45e858ffc5b159aed52a3b0996f83",
+      "size_bytes": 49929
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/12_shap_lstm.png",
+      "sha256": "0bcf8e41ac301e741ac7a9d680f562b9909d4eb1b332513156a45a2ba0909203",
+      "size_bytes": 89552
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/13_per_exercise_cm.png",
+      "sha256": "30c6c47f41fc1ee02fc6f0f8e59bfc0b11576cd86f30ecbd31953a04cd0ef7d2",
+      "size_bytes": 48101
+    },
+    {
+      "relative_path": "Datasets v2/visualizations/13_test_cases.png",
+      "sha256": "de62ac19f2c5a2c59b5568fdf1630554251cf320da66127bc8a11e96288c3a61",
+      "size_bytes": 55903
+    }
+  ],
+  "generated_utc": "2026-08-31T18:10:20.025979+00:00"
+}

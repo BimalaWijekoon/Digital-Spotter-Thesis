@@ -1,0 +1,3 @@
+index,column,branch,units,repetition_level_copy,source_hash_reference
+0,Exercise_ID,context,exercise ID category code,True,cd52a0935ab1531196855f349024fd84a2507d0c896925f118e5cbe4bb60f19b
+1,Load_kg,context,kg (column convention),True,cd52a0935ab1531196855f349024fd84a2507d0c896925f118e5cbe4bb60f19b

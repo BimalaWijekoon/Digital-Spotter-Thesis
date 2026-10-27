@@ -1,0 +1,128 @@
+{
+  "context_feature_order": [
+    "Exercise_ID",
+    "Load_kg"
+  ],
+  "context_scaler": {
+    "mean": [
+      0.49950445986124875,
+      86.5416253716551
+    ],
+    "scale": [
+      0.4999997544399105,
+      45.496343221359545
+    ]
+  },
+  "model_version": "digital_spotter_v5_scope_faithful",
+  "phase_order": [
+    1,
+    2,
+    3
+  ],
+  "platt": {
+    "coefficient": 5.728217780035638,
+    "intercept": -2.799076120638883
+  },
+  "schema_version": 1,
+  "source_sha256": {
+    "saved_models/calibration/final_calibrator.joblib": "9b4984f9fc2584fe0a8fa6356d55f24161c1e9c4e2af93d30624de9ca1ebfe59",
+    "saved_models/preprocessing/final_preprocessing.json": "4fffecb75b2adc289f2ac9fd49da797d8ecf1b3a21f4b1f60e4f8049204685ca",
+    "saved_models/preprocessing/final_preprocessor.joblib": "9ad050b71977b82fbc31e9fa3236e900ff6e519b23a9008418c0e0ff994be71d"
+  },
+  "source_state_hash": "fad1a38ba78668bc70c44bc5aab9439096d8510c134a8ab37ffdaee9176671d5",
+  "temporal_feature_order": [
+    "Vis_L_Shoulder_X",
+    "Vis_L_Shoulder_Y",
+    "Vis_R_Shoulder_X",
+    "Vis_R_Shoulder_Y",
+    "Vis_L_Hip_X",
+    "Vis_L_Hip_Y",
+    "Vis_R_Hip_X",
+    "Vis_R_Hip_Y",
+    "Vis_L_Knee_X",
+    "Vis_L_Knee_Y",
+    "Vis_R_Knee_X",
+    "Vis_R_Knee_Y",
+    "Vis_L_Ankle_X",
+    "Vis_L_Ankle_Y",
+    "Vis_R_Ankle_X",
+    "Vis_R_Ankle_Y",
+    "Angle_Trunk_Inclination",
+    "Hip_Flexion_Asymmetry",
+    "Knee_Flexion_Asymmetry",
+    "Ankle_Dorsiflexion_Asymmetry",
+    "Knee_Hip_Coupling_L",
+    "Knee_Hip_Coupling_R",
+    "IMU_Acc_X",
+    "IMU_Acc_Y",
+    "IMU_Acc_Z",
+    "IMU_Gyro_X",
+    "IMU_Gyro_Y",
+    "IMU_Gyro_Z",
+    "IMU_Acc_Magnitude"
+  ],
+  "temporal_scaler": {
+    "mean": [
+      0.53296778971581,
+      0.4295346880307637,
+      0.4544646522915714,
+      0.429684836699264,
+      0.5215571524140304,
+      0.6084360751305865,
+      0.45513990701111307,
+      0.6085356786517291,
+      0.5665024776426447,
+      0.6776290056155703,
+      0.43666435448809116,
+      0.6778219362808842,
+      0.5498759503761533,
+      0.8371769073953084,
+      0.44049785311048006,
+      0.8373406011258016,
+      142.54469766859415,
+      2.2430128870002104,
+      1.9967129200556646,
+      0.7907168841020853,
+      29948.202298084383,
+      69888.72458286112,
+      0.15720077639589575,
+      0.08619476528470513,
+      -9.807773049924489,
+      1.4275761475919981,
+      0.5923361514483195,
+      0.03538239185169442,
+      9.811499751594777
+    ],
+    "scale": [
+      0.06669694992540774,
+      0.05305867841587361,
+      0.0641147104793684,
+      0.053573233147489685,
+      0.13083671752271217,
+      0.0595376376617836,
+      0.11697731954388228,
+      0.05976120825843956,
+      0.14169024945869005,
+      0.0490847931730173,
+      0.1545787254869686,
+      0.049274193701668155,
+      0.09585939340594778,
+      0.05717843871225991,
+      0.08388570604991843,
+      0.05716634538480099,
+      26.99910334537236,
+      3.534395142853919,
+      3.3042485190897763,
+      0.6047764772597504,
+      544907.6806057564,
+      815192.6691439564,
+      0.10201875239059643,
+      0.08735017778551599,
+      0.04550249559722776,
+      0.9075269413129942,
+      0.5649959340218622,
+      0.11128642025105098,
+      0.046938845354498514
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "coef": 5.021459685155982,
+  "input": "raw_probability",
+  "intercept": -2.214216586475489,
+  "kind": "platt",
+  "positive_class": 1
+}

@@ -1,0 +1,54 @@
+{
+  "same_topology_materials_skin_weights": true,
+  "paired_bind_geometry_identical": {
+    "squat_correct / squat_forward_lean": true,
+    "deadlift_correct / deadlift_spinal_rounding": true
+  },
+  "clips": [
+    {
+      "scenario_id": "squat_correct",
+      "maximum_chest_inclination_from_vertical_degrees": 37.00000113483147,
+      "maximum_pelvis_to_chest_spinal_bend_degrees": 0.0,
+      "max_shoe_vertex_drift_metres": 1.0320886190129386e-07,
+      "max_unoriented_forearm_to_hand_axis_angle_degrees": 10.67537767073847,
+      "max_bar_to_upper_back_anchor_drift_metres": 1.0259146380120712e-07,
+      "loop_endpoint_vertex_delta_metres": 0.0,
+      "start_and_end_hold_vertex_delta_metres": 0.0
+    },
+    {
+      "scenario_id": "squat_forward_lean",
+      "maximum_chest_inclination_from_vertical_degrees": 62.99999911080944,
+      "maximum_pelvis_to_chest_spinal_bend_degrees": 0.0,
+      "max_shoe_vertex_drift_metres": 9.382533505686297e-08,
+      "max_unoriented_forearm_to_hand_axis_angle_degrees": 10.67537767073847,
+      "max_bar_to_upper_back_anchor_drift_metres": 1.1656118685720947e-07,
+      "loop_endpoint_vertex_delta_metres": 0.0,
+      "start_and_end_hold_vertex_delta_metres": 0.0
+    },
+    {
+      "scenario_id": "deadlift_correct",
+      "maximum_chest_inclination_from_vertical_degrees": 67.06595799384135,
+      "maximum_pelvis_to_chest_spinal_bend_degrees": 0.0,
+      "max_shoe_vertex_drift_metres": 1.7393556106526376e-07,
+      "max_unoriented_forearm_to_hand_axis_angle_degrees": 13.387799874916908,
+      "max_bar_to_upper_back_anchor_drift_metres": null,
+      "loop_endpoint_vertex_delta_metres": 0.0,
+      "start_and_end_hold_vertex_delta_metres": 0.0
+    },
+    {
+      "scenario_id": "deadlift_spinal_rounding",
+      "maximum_chest_inclination_from_vertical_degrees": 86.6612398825746,
+      "maximum_pelvis_to_chest_spinal_bend_degrees": 44.00000101696718,
+      "max_shoe_vertex_drift_metres": 1.1627087559418214e-07,
+      "max_unoriented_forearm_to_hand_axis_angle_degrees": 13.387799874916908,
+      "max_bar_to_upper_back_anchor_drift_metres": null,
+      "loop_endpoint_vertex_delta_metres": 0.0,
+      "start_and_end_hold_vertex_delta_metres": 0.0
+    }
+  ],
+  "limitations": [
+    "Skin bind poses differ between squat and deadlift; each correct/error pair shares byte-identical bind geometry. Character dimensions, topology, skin weights, materials and equipment design are shared across all four.",
+    "Angles are authoring measurements, not diagnostic thresholds. A binary classifier must not be interpreted as detecting these named faults.",
+    "No full mesh collision analysis, finger pressure/contact simulation, force analysis or biomechanical validation. No Three.js browser playback test has been performed."
+  ]
+}

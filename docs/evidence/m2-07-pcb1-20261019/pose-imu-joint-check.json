@@ -1,0 +1,27 @@
+{
+  "status": {
+    "version": "research_status_v1",
+    "session": {
+      "state": "active",
+      "rep_count": 0
+    },
+    "wearable": {
+      "state": "degraded"
+    },
+    "camera": {
+      "state": "degraded"
+    },
+    "analysis": {
+      "state": "unavailable",
+      "reason": "v5_live_feature_contract_unverified"
+    },
+    "latest_rep": null
+  },
+  "imu_sample_count": 100,
+  "imu_first_sequence": 836,
+  "imu_last_sequence": 935,
+  "imu_window_span_ms": 1979.29,
+  "imu_sequence_gaps_in_window": 0,
+  "real_hardware": true,
+  "model_scoring_enabled": false
+}

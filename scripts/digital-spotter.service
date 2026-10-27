@@ -1,0 +1,36 @@
+[Unit]
+Description=Digital Spotter FastAPI Migration Backend
+Documentation=https://github.com/BimalaWijekoon/Digital-Spotter
+After=network-online.target mediamtx.service
+Wants=network-online.target
+Wants=mediamtx.service
+
+[Service]
+Type=simple
+User=pibimalawijekoon
+WorkingDirectory=/home/pibimalawijekoon/Digital-Spotter
+
+# Temporary M0 migration service. M8 replaces this account/layout with the
+# dedicated least-privilege product services defined in ARCHITECTURE.md.
+ExecStart=/home/pibimalawijekoon/.pyenv/versions/3.12.0/bin/python3 /home/pibimalawijekoon/Digital-Spotter/scripts/run_server.py
+
+# Restart automatically if it crashes
+Restart=on-failure
+RestartSec=5
+
+# Give it 30s to fully start before systemd considers it failed
+TimeoutStartSec=30
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=DS_API_HOST=0.0.0.0
+Environment=DS_API_PORT=8000
+
+# Log to journald (view with: journalctl -u digital-spotter -f)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=digitalspotter
+
+[Install]
+WantedBy=multi-user.target

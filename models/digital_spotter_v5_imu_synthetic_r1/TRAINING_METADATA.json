@@ -1,0 +1,301 @@
+{
+  "environment": {
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+    "python": "3.12.13",
+    "versions": {
+      "keras": "3.13.2",
+      "numpy": "2.4.4",
+      "scikit-learn": "1.8.0",
+      "tensorflow": "2.21.0"
+    }
+  },
+  "epoch_calibration_threshold_policy": {
+    "calibration": {
+      "coef": 5.021459685155982,
+      "input": "raw_probability",
+      "intercept": -2.214216586475489,
+      "kind": "platt",
+      "positive_class": 1
+    },
+    "epochs": 12,
+    "inner_best_epochs": [
+      11,
+      12,
+      16,
+      8,
+      13,
+      8,
+      17,
+      14,
+      9,
+      12,
+      19,
+      11,
+      15,
+      17,
+      12,
+      14,
+      10,
+      10,
+      16,
+      10
+    ],
+    "threshold": 0.3976007923801824,
+    "warning": "Global calibrator/threshold fit on OOF labels; fit statistics are not independent evaluation. Transfer to final all-data model is unverified."
+  },
+  "model_training_fits": 26,
+  "other_architectures_trained": false,
+  "outer_fold_metrics": [
+    {
+      "accuracy": 0.8525,
+      "bad_form_recall": 0.7469879518072289,
+      "balanced_accuracy": 0.8371691895788281,
+      "brier": 0.12244899911297356,
+      "calibration": "UNCALIBRATED",
+      "confusion_matrix": [
+        [
+          217,
+          17
+        ],
+        [
+          42,
+          124
+        ]
+      ],
+      "f1": 0.8078175895765473,
+      "mcc": 0.6954732207137179,
+      "outer_fold": 0,
+      "pr_auc": 0.8672448000926213,
+      "precision": 0.8794326241134752,
+      "roc_auc": 0.8859798167027083,
+      "sample_count": 400,
+      "threshold": 0.42846623063087463
+    },
+    {
+      "accuracy": 0.855036855036855,
+      "bad_form_recall": 0.80625,
+      "balanced_accuracy": 0.8464448380566802,
+      "brier": 0.11950713848800097,
+      "calibration": "UNCALIBRATED",
+      "confusion_matrix": [
+        [
+          219,
+          28
+        ],
+        [
+          31,
+          129
+        ]
+      ],
+      "f1": 0.8138801261829653,
+      "mcc": 0.6952687790955544,
+      "outer_fold": 1,
+      "pr_auc": 0.8287229944633647,
+      "precision": 0.821656050955414,
+      "roc_auc": 0.8834514170040486,
+      "sample_count": 407,
+      "threshold": 0.335558146238327
+    },
+    {
+      "accuracy": 0.8801955990220048,
+      "bad_form_recall": 0.8055555555555556,
+      "balanced_accuracy": 0.8722100921882581,
+      "brier": 0.09706999985556548,
+      "calibration": "UNCALIBRATED",
+      "confusion_matrix": [
+        [
+          215,
+          14
+        ],
+        [
+          35,
+          145
+        ]
+      ],
+      "f1": 0.855457227138643,
+      "mcc": 0.7580599760144668,
+      "outer_fold": 2,
+      "pr_auc": 0.913190987680671,
+      "precision": 0.9119496855345912,
+      "roc_auc": 0.9147743813682678,
+      "sample_count": 409,
+      "threshold": 0.4615224003791809
+    },
+    {
+      "accuracy": 0.837772397094431,
+      "bad_form_recall": 0.7542857142857143,
+      "balanced_accuracy": 0.8267226890756303,
+      "brier": 0.12428241984823359,
+      "calibration": "UNCALIBRATED",
+      "confusion_matrix": [
+        [
+          214,
+          24
+        ],
+        [
+          43,
+          132
+        ]
+      ],
+      "f1": 0.797583081570997,
+      "mcc": 0.666021014767747,
+      "outer_fold": 3,
+      "pr_auc": 0.8585203321492825,
+      "precision": 0.8461538461538461,
+      "roc_auc": 0.872124849939976,
+      "sample_count": 413,
+      "threshold": 0.40123695135116577
+    },
+    {
+      "accuracy": 0.8483290488431876,
+      "bad_form_recall": 0.7125748502994012,
+      "balanced_accuracy": 0.8315126503749257,
+      "brier": 0.12883350303241647,
+      "calibration": "PLATT",
+      "confusion_matrix": [
+        [
+          211,
+          11
+        ],
+        [
+          48,
+          119
+        ]
+      ],
+      "f1": 0.8013468013468014,
+      "mcc": 0.6957340613355995,
+      "outer_fold": 4,
+      "pr_auc": 0.8826651810046331,
+      "precision": 0.9153846153846154,
+      "roc_auc": 0.8858499217780654,
+      "sample_count": 389,
+      "threshold": 0.34842173656270564
+    }
+  ],
+  "run_contract": {
+    "contract": {
+      "code_sha256": "4f33481aeab951663da829083c2038c66417c59b59c00b34c71e69811b93ab1e",
+      "config": {
+        "architecture": "V5_SCOPE_FAITHFUL_BiLSTM_64_32_MHA_2x16",
+        "batch_size": 32,
+        "context_features": [
+          "Exercise_ID",
+          "Load_kg"
+        ],
+        "early_stopping_min_delta": 0.0001,
+        "early_stopping_monitor": "val_loss",
+        "early_stopping_patience": 8,
+        "excluded_work": [
+          "Random Forest training",
+          "architecture ablations",
+          "larger alternate LSTM models",
+          "hyperparameter or loss-policy search",
+          "synthetic fourth timestep or delta branch",
+          "reuse of old fitted preprocessing/calibration/threshold",
+          "automatic Pi deployment or runtime activation"
+        ],
+        "expected_parameter_count": 105681,
+        "fit_breakdown": "20 inner development fits, 5 outer evaluation fits, 1 final deployment fit; one architecture only",
+        "group_column": "Subject_ID",
+        "group_provenance": "synthetic identity; not measured human-subject generalization",
+        "inner_grouped_folds": 4,
+        "internal_fit_profiles": 12,
+        "internal_monitor_profiles": 3,
+        "learning_rate": 0.0003,
+        "loss": "BinaryCrossentropy",
+        "max_epochs": 60,
+        "optimizer": "Adam",
+        "outer_grouped_folds": 5,
+        "owner_selected_evaluation": "original_subject_grouped_cross_validation",
+        "planned_lstm_fits": 26,
+        "required_techniques": [
+          "new source/split manifests and input hashes",
+          "group-isolated training/development/test partitions",
+          "train-only fitted IMU winsorization",
+          "phase-specific temporal median imputation",
+          "separate temporal and context StandardScalers",
+          "BiLSTM and BatchNorm with original dropout rates",
+          "two-head attention with residual and LayerNorm",
+          "early stopping with best weights restored",
+          "independent 12-profile fit / 3-profile monitor / 5-profile inner validation",
+          "fresh cross-fitted calibration and threshold selection",
+          "new final epoch policy from development fits",
+          "one final all-data deployment fit",
+          "Keras save/reload and built-in TFLite parity",
+          "synthetic-only performance labels and inherited-target limitations"
+        ],
+        "seed": 42,
+        "shuffle": false,
+        "status": "approved_training_recipe",
+        "temporal_shape": [
+          3,
+          29
+        ]
+      },
+      "context": [
+        "Exercise_ID",
+        "Load_kg"
+      ],
+      "data_sha256": "934925aa40ad7e24e6f34ff12075d76d70d0a97ba1f200374508505323d620ff",
+      "manifest_sha256": "c6c429e594d20c600924262f43b6eec234d5215855e49bae4c1f941d394b9da0",
+      "model_version": "digital_spotter_v5_imu_synthetic_r1",
+      "registry_sha256": "7e11587f51e748ae0e327461bbac96e9b2cf0c821c1dd7da45590b41aabfd48e",
+      "synthetic_data": true,
+      "target": "unchanged historical phase-3 Class_Binary",
+      "temporal_features": [
+        "Vis_L_Shoulder_X",
+        "Vis_L_Shoulder_Y",
+        "Vis_R_Shoulder_X",
+        "Vis_R_Shoulder_Y",
+        "Vis_L_Hip_X",
+        "Vis_L_Hip_Y",
+        "Vis_R_Hip_X",
+        "Vis_R_Hip_Y",
+        "Vis_L_Knee_X",
+        "Vis_L_Knee_Y",
+        "Vis_R_Knee_X",
+        "Vis_R_Knee_Y",
+        "Vis_L_Ankle_X",
+        "Vis_L_Ankle_Y",
+        "Vis_R_Ankle_X",
+        "Vis_R_Ankle_Y",
+        "Angle_Trunk_Inclination",
+        "Hip_Flexion_Asymmetry",
+        "Knee_Flexion_Asymmetry",
+        "Ankle_Dorsiflexion_Asymmetry",
+        "Knee_Hip_Coupling_L",
+        "Knee_Hip_Coupling_R",
+        "IMU_Acc_X",
+        "IMU_Acc_Y",
+        "IMU_Acc_Z",
+        "IMU_Gyro_X",
+        "IMU_Gyro_Y",
+        "IMU_Gyro_Z",
+        "IMU_Acc_Magnitude"
+      ]
+    },
+    "run_hash": "379ae2932ee5081cc3f8e73450adbc8e5a660c58a5c8930548e930cac230bc05"
+  },
+  "synthetic_grouped_cv": {
+    "accuracy": 0.854806739345887,
+    "bad_form_recall": 0.7653301886792453,
+    "balanced_accuracy": 0.8424941541686825,
+    "brier": 0.11831789248149781,
+    "confusion_matrix": [
+      [
+        1076,
+        94
+      ],
+      [
+        199,
+        649
+      ]
+    ],
+    "f1": 0.8158390949088623,
+    "mcc": 0.701010489560712,
+    "pr_auc": 0.8603919573345702,
+    "precision": 0.873485868102288,
+    "roc_auc": 0.886580793420416,
+    "sample_count": 2018
+  }
+}

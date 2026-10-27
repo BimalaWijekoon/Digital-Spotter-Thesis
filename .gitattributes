@@ -1,0 +1,6 @@
+# Preserve byte-for-byte generated checksum inventories. Their CRLF line endings
+# are part of the archived model packages and should not be normalized.
+models/digital_spotter_v5/docs/PACKAGE_SHA256.csv -text -diff
+models/digital_spotter_v5_imu_synthetic_r1/SHA256SUMS.csv -text -diff
+src/digital_spotter/web/static/vendor/exercise-scenarios-character-r1/License_Standard.txt -text -diff
+src/digital_spotter/web/static/vendor/quaternius-human/LICENSE.txt -text -diff

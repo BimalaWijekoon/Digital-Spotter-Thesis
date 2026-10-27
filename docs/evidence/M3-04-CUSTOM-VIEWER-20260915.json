@@ -1,0 +1,14 @@
+{
+  "width": 1280,
+  "height": 720,
+  "decoded_frames": 99,
+  "frames_in_3s": 89,
+  "dropped_frames": 4,
+  "media_time_advanced_s": 3.006,
+  "ready_state": 4,
+  "hardware_simulated": false,
+  "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+  "passed": true,
+  "player_state": "playing",
+  "clean_stop": true
+}

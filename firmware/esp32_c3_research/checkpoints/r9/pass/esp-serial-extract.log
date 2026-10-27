@@ -1,0 +1,24 @@
+[IMU_STATUS] ready=1 address=0x68 who_am_i=0x70 rate_hz=50 accel_range_g=2 gyro_range_dps=250 dlpf=3 samples=503 retries=0 errors=0 bus_failures=0 consecutive_errors=0 ble_payload=real_mpu6500
+[BLE] CLIENT CONNECTED
+[BLE] Link security requested by firmware: none
+[LED] Solid green = connected
+[GATT] DEVICE_INFO READ uuid=e193acb8-25ef-422c-b3e5-972eae75b8ea length=69 value=protocol=1;firmware=0.9.0-r9;hardware=esp32-c3;imu=mpu6500;rate_hz=50
+[STREAM] Real MPU6500 50 Hz schedule started at sequence 0
+[GATT] STREAM NOTIFY sample=1 sequence=0 sensor_time_us=30577918 length=20 source=mpu6500 imu_sample=1461 age_us=11 flags=0x00 i2c_retries=0 i2c_errors=0
+[GATT] STREAM NOTIFY sample=2 sequence=1 sensor_time_us=30597897 length=20 source=mpu6500 imu_sample=1462 age_us=9 flags=0x00 i2c_retries=0 i2c_errors=0
+[GATT] STREAM NOTIFY sample=3 sequence=2 sensor_time_us=30617917 length=20 source=mpu6500 imu_sample=1463 age_us=9 flags=0x00 i2c_retries=0 i2c_errors=0
+[GATT] STREAM NOTIFY sample=500 sequence=499 sensor_time_us=40557852 length=20 source=mpu6500 imu_sample=1960 age_us=10 flags=0x00 i2c_retries=0 i2c_errors=0
+[GATT] STREAM NOTIFY sample=1000 sequence=999 sensor_time_us=50557850 length=20 source=mpu6500 imu_sample=2460 age_us=10 flags=0x00 i2c_retries=0 i2c_errors=0
+[GATT] STREAM NOTIFY sample=1500 sequence=1499 sensor_time_us=60557865 length=20 source=mpu6500 imu_sample=2960 age_us=17 flags=0x00 i2c_retries=0 i2c_errors=0
+[ACTUATOR] Identify LED started duration_ms=900
+[REALTIME] Deferred nonessential log events=12
+[ACTUATOR] Cue test started steps=6 step_duration_ms=900
+[ACTUATOR] Cue test step=1 cue=boot
+[ACTUATOR] Cue test step=2 cue=advertising
+[ACTUATOR] Cue test step=3 cue=connected
+[ACTUATOR] Cue test step=4 cue=streaming
+[ACTUATOR] Cue test step=5 cue=disconnected
+[ACTUATOR] Cue test step=6 cue=error
+
+Final post-reset status:
+[IMU_STATUS] ready=1 address=0x68 who_am_i=0x70 rate_hz=50 accel_range_g=2 gyro_range_dps=250 dlpf=3 samples=54647 retries=1 errors=0 bus_failures=1 consecutive_errors=0 ble_payload=real_mpu6500

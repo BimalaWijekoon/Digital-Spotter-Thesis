@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "package_id": "digital-spotter-v4-compat",
+  "model_version": "4.0.0-compat",
+  "feature_contract_version": "1.0.0-compat",
+  "release_status": "compatibility_only",
+  "artifacts": [
+    {
+      "path": "model_quantized.tflite",
+      "purpose": "primary_model",
+      "sha256": "4f6f152f02eca59b9b51d9a934c1d68c6fc84f420f76da780f722b85b3b3a303",
+      "size_bytes": 536488,
+      "required": true
+    },
+    {
+      "path": "scaler.save",
+      "purpose": "standard_scaler",
+      "sha256": "c577b57752749a8866e5e9d9db7b0ec5799538966bd8be2d83a49d4063120247",
+      "size_bytes": 1543,
+      "required": true
+    },
+    {
+      "path": "winsor_bounds.save",
+      "purpose": "winsor_bounds",
+      "sha256": "20c38ea396f43fa000026293fc5513fc15024cd40b1c049816f038439e51d024",
+      "size_bytes": 251,
+      "required": true
+    },
+    {
+      "path": "feature_medians.save",
+      "purpose": "feature_medians",
+      "sha256": "adada7b0ee4ad11ca63d6adc76d7fdf9e6321035fe14f761a6e11d56efcfd3e0",
+      "size_bytes": 1066,
+      "required": true
+    },
+    {
+      "path": "deployment_config.save",
+      "purpose": "exported_training_contract",
+      "sha256": "1d4efd32bd2010ec2a4ecda8f7feb75225bc60d97696bcee0e3508de41587b75",
+      "size_bytes": 942,
+      "required": true
+    },
+    {
+      "path": "model_fullprec.tflite",
+      "purpose": "full_precision_reference",
+      "sha256": "da735fced6ce6a997b5ed02d5901bb9b3a16a8743e171d28ed8e13e5d90132b5",
+      "size_bytes": 1768756,
+      "required": false
+    },
+    {
+      "path": "model_card.md",
+      "purpose": "model_card",
+      "sha256": "0027819caddc6d3cba40fd083804fbf4f420c904a46e41cc5ad5f4f1562c0387",
+      "size_bytes": 4261,
+      "required": true
+    }
+  ],
+  "input": {
+    "name": "serving_default_sequence_input:0",
+    "shape": [1, 4, 40],
+    "shape_signature": [-1, 4, 40],
+    "dtype": "float32",
+    "quantization_scale": 0.0,
+    "quantization_zero_point": 0
+  },
+  "output": {
+    "name": "StatefulPartitionedCall_1:0",
+    "shape": [1, 1],
+    "shape_signature": [-1, 1],
+    "dtype": "float32",
+    "quantization_scale": 0.0,
+    "quantization_zero_point": 0,
+    "meaning": "sigmoid probability of bad form",
+    "good_form_label": "Good Form",
+    "bad_form_label": "Bad Form",
+    "bad_form_threshold": 0.35947465896606445
+  },
+  "sequence_contract": {
+    "phase_rows": ["eccentric_descent", "isometric_bottom", "concentric_lockout"],
+    "fourth_row": "phase_3_minus_phase_1",
+    "velocity_decel_ratio_delta_override": true
+  },
+  "features": [
+    {"name": "Subject_Height_cm", "unit": "cm", "unit_status": "known", "source": "session_context"},
+    {"name": "Subject_Weight_kg", "unit": "kg", "unit_status": "known", "source": "session_context"},
+    {"name": "Exercise_ID", "unit": "categorical_id", "unit_status": "categorical", "source": "session_context"},
+    {"name": "Rep_Phase", "unit": "categorical_phase_id", "unit_status": "categorical", "source": "rep_state"},
+    {"name": "Load_kg", "unit": "kg", "unit_status": "known", "source": "session_context"},
+    {"name": "Vis_L_Shoulder_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Shoulder_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Shoulder_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Shoulder_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Hip_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Hip_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Hip_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Hip_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Knee_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Knee_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Knee_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Knee_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Ankle_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_L_Ankle_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Ankle_X", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Vis_R_Ankle_Y", "unit": "normalized_image_coordinate", "unit_status": "known", "source": "vision"},
+    {"name": "Angle_Trunk_Inclination", "unit": "degree", "unit_status": "known", "source": "vision"},
+    {"name": "IMU_Acc_X", "unit": "m_s2", "unit_status": "inferred", "source": "imu", "note": "saved distribution is gravity-centered near 9.8; current firmware emits g and is incompatible"},
+    {"name": "IMU_Acc_Y", "unit": "m_s2", "unit_status": "inferred", "source": "imu", "note": "saved distribution is gravity-centered near 9.8; current firmware emits g and is incompatible"},
+    {"name": "IMU_Acc_Z", "unit": "m_s2", "unit_status": "inferred", "source": "imu", "note": "saved distribution is gravity-centered near 9.8; current firmware emits g and is incompatible"},
+    {"name": "IMU_Gyro_X", "unit": "degree_s", "unit_status": "inferred", "source": "imu"},
+    {"name": "IMU_Gyro_Y", "unit": "degree_s", "unit_status": "inferred", "source": "imu"},
+    {"name": "IMU_Gyro_Z", "unit": "degree_s", "unit_status": "inferred", "source": "imu"},
+    {"name": "V_Bar_Velocity_Vertical", "unit": "unknown", "unit_status": "unknown", "source": "unvalidated_bar_derivation", "note": "not directly observed by lower-back IMU"},
+    {"name": "P_Bar_Power_Watts", "unit": "unknown", "unit_status": "unknown", "source": "unvalidated_bar_derivation", "note": "not directly observed by lower-back IMU"},
+    {"name": "Smoothness_Jerk", "unit": "unknown", "unit_status": "unknown", "source": "unvalidated_derivation"},
+    {"name": "Hip_Flexion_Asymmetry", "unit": "degree", "unit_status": "known", "source": "vision"},
+    {"name": "Knee_Flexion_Asymmetry", "unit": "degree", "unit_status": "known", "source": "vision"},
+    {"name": "Ankle_Dorsiflexion_Asymmetry", "unit": "degree", "unit_status": "known", "source": "vision"},
+    {"name": "IMU_Acc_Magnitude", "unit": "m_s2", "unit_status": "inferred", "source": "imu_derived"},
+    {"name": "Knee_Hip_Coupling_L", "unit": "ratio", "unit_status": "known", "source": "vision_derived"},
+    {"name": "Knee_Hip_Coupling_R", "unit": "ratio", "unit_status": "known", "source": "vision_derived"},
+    {"name": "Velocity_Decel_Ratio", "unit": "ratio", "unit_status": "unknown", "source": "unvalidated_bar_derivation"},
+    {"name": "Femur_Tibia_Ratio", "unit": "ratio", "unit_status": "known", "source": "session_context"},
+    {"name": "BMI", "unit": "kg_m2", "unit_status": "known", "source": "session_context_derived"}
+  ],
+  "preprocessing": [
+    {"order": 1, "operation": "winsorize", "artifact": "winsor_bounds.save", "detail": "clip seven saved IMU features to training bounds"},
+    {"order": 2, "operation": "median_impute", "artifact": "feature_medians.save", "detail": "replace NaN per feature"},
+    {"order": 3, "operation": "standard_scale", "artifact": "scaler.save", "detail": "40-column sklearn StandardScaler"},
+    {"order": 4, "operation": "add_batch_dimension", "artifact": null, "detail": "reshape (4,40) to (1,4,40) float32"}
+  ],
+  "missing_data_policy": {
+    "artifact_policy": "median imputation for NaN",
+    "prototype_behavior": "some missing pose/IMU/bar values become zeros before preprocessing",
+    "product_policy": "required modality missing or stale must fail scoring readiness; no zero fill"
+  },
+  "runtime": {
+    "validated_platform": "Raspberry Pi 4B aarch64 Debian 13.5 Python 3.12.0",
+    "validated_ai_edge_litert": "2.1.5",
+    "validated_tensorflow_preload": "2.16.2",
+    "requires_flex_delegate": true,
+    "observed_delegates": ["TensorFlow Flex", "XNNPACK"],
+    "operators": [
+      "ADD", "BATCH_MATMUL", "CONCATENATION", "FILL", "FlexTensorListReserve",
+      "FlexTensorListStack", "FULLY_CONNECTED", "LOGISTIC", "MEAN", "MUL", "NEG",
+      "PACK", "RESHAPE", "REVERSE_V2", "RSQRT", "SHAPE", "SOFTMAX",
+      "SQUARED_DIFFERENCE", "STRIDED_SLICE", "TRANSPOSE", "WHILE"
+    ]
+  },
+  "training_provenance": {
+    "status": "incomplete",
+    "artifact_commit": "9646772",
+    "claimed_source": "training notebook export",
+    "training_notebook": null,
+    "dataset_manifest": null,
+    "split_manifest": null,
+    "scaler_samples_seen": 5652
+  },
+  "evaluation": {
+    "status": "unavailable",
+    "metrics": {},
+    "threshold_rationale": null,
+    "approved_exercises": []
+  },
+  "limitations": [
+    "No traceable training data, group-safe split, sealed-test metrics, subgroup evaluation, or threshold rationale is present.",
+    "Current MPU6500 firmware emits acceleration in g while saved artifacts imply m/s2.",
+    "Lower-back IMU does not directly measure the named bar velocity or bar power features.",
+    "Current prototype may zero-fill missing modalities and can fall back to random mock predictions.",
+    "Model requires TensorFlow Flex and is not the Pi-native built-in-operator product target.",
+    "No exercise, population, mounting, orientation, or accuracy claim is approved."
+  ],
+  "signature": {
+    "status": "unsigned",
+    "required_for_production": true,
+    "algorithm": null,
+    "key_id": null,
+    "signature_file": null
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "joblib": "1.6.0",
+  "keras": "3.13.2",
+  "numpy": "2.4.4",
+  "package_created_in": "repository Python 3.12 environment; not validated on Raspberry Pi",
+  "pandas": "3.0.2",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "python": "3.12.13",
+  "scikit_learn": "1.8.0",
+  "tensorflow": "2.21.0"
+}

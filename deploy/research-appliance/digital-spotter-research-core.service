@@ -1,0 +1,21 @@
+[Unit]
+Description=Digital Spotter research core and private UI
+Before=digital-spotter-research-imu.service digital-spotter-research-media.service
+PartOf=digital-spotter-research.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/digital-spotter-research/appliance.env
+WorkingDirectory=%h/digital-spotter-research/current
+ExecStart=/bin/sh %h/digital-spotter-research/current/deploy/research-appliance/run-core.sh
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+RuntimeDirectory=digital-spotter-research
+RuntimeDirectoryMode=0750
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=digital-spotter-research.target

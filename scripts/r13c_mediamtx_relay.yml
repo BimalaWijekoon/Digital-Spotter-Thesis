@@ -1,0 +1,18 @@
+# Isolated R13-C relay configuration. Picamera2 remains the sole camera owner;
+# MediaMTX only republishes the encoded H.264 stream to WebRTC.
+logLevel: info
+
+rtsp: yes
+rtspAddress: :8554
+
+rtmp: no
+hls: no
+srt: no
+
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+
+paths:
+  picamera2:
+    source: publisher

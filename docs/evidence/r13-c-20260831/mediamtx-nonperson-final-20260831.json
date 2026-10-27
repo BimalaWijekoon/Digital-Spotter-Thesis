@@ -1,0 +1,50 @@
+{
+  "candidate": "mediamtx-rtsp",
+  "evidence_environment": "real_hardware",
+  "hardware_simulated": false,
+  "measurement": {
+    "candidate": "mediamtx-rtsp",
+    "capture_age_p50_ms": null,
+    "capture_age_p95_ms": null,
+    "capture_times_monotonic": false,
+    "effective_pose_fps": 6.784,
+    "failed_checks": [
+      "capture_timestamp_unavailable"
+    ],
+    "frames_processed": 68,
+    "missing_person_explicit": true,
+    "observed_duration_s": 10.023216,
+    "pose_found_pct": 0.0,
+    "pose_processing_p50_ms": 138.961,
+    "pose_processing_p95_ms": 145.238,
+    "pose_valid_pct": 0.0,
+    "source_frames_dropped": 256,
+    "timestamp_coverage_pct": 0.0
+  },
+  "resources": {
+    "process_cpu_pct": 166.8,
+    "rss_end_mb": 612.4,
+    "rss_peak_mb": 664.0,
+    "rss_start_mb": 533.2,
+    "stack_cpu_pct": 199.2,
+    "stack_processes": [
+      "pose-benchmark",
+      "mediamtx",
+      "mtxrpicam"
+    ],
+    "stack_rss_end_mb": 708.9,
+    "stack_rss_peak_mb": 709.2,
+    "stack_rss_start_mb": 692.8,
+    "temperature_end_c": 60.861,
+    "temperature_peak_c": 62.809,
+    "temperature_start_c": 56.965,
+    "throttled_end": "throttled=0x0",
+    "throttled_start": "throttled=0x0"
+  },
+  "restart_passed": true,
+  "restart_results": [
+    true,
+    true,
+    true
+  ]
+}

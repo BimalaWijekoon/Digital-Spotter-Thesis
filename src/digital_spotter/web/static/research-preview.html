@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Digital Spotter — Research video preview</title>
+  <script defer src="vendor/mediamtx-v1.12.3/reader.js"></script>
+  <script type="module" src="research-preview-page.mjs"></script>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    .stage { position: relative; width: 100%; }
+    video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #111; }
+    canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+    input { width: min(100%, 34rem); padding: .6rem; }
+    button { padding: .6rem 1rem; margin: .5rem 0; }
+    label { display: block; margin-bottom: .5rem; }
+  </style>
+</head>
+<body>
+  <h1>Research video preview</h1>
+  <p>Research camera video and timestamp-gated pose overlay. No exercise analysis. Stops after two minutes.</p>
+  <p>Private SSH-tunnel bench use only; this is not the authenticated product UI.</p>
+  <form id="preview-form">
+    <label for="whep-url">Forwarded WHEP endpoint</label>
+    <input id="whep-url" type="url" required autocomplete="off"
+      placeholder="http://127.0.0.1:8889/picamera2/whep">
+    <button id="start" type="submit">Start preview</button>
+    <button id="stop" type="button" disabled>Stop preview</button>
+  </form>
+  <p id="status" role="status" data-state="idle">idle</p>
+  <p id="pose-status" role="status" data-state="cleared">Pose unavailable: not started</p>
+  <div class="stage">
+    <video muted autoplay playsinline aria-label="Live research camera preview"></video>
+    <canvas id="pose-canvas" aria-hidden="true"></canvas>
+  </div>
+</body>
+</html>

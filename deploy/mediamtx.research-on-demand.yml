@@ -1,0 +1,22 @@
+# Research-only Pi camera relay. The launcher keeps WHEP/RTSP on loopback and,
+# for direct tailnet access, binds ICE-TCP to the configured Tailscale IPv4.
+logLevel: info
+rtsp: yes
+protocols: [tcp]
+rtspAddress: 127.0.0.1:8554
+rtmp: no
+hls: no
+srt: no
+webrtc: yes
+webrtcAddress: 127.0.0.1:8889
+webrtcAllowOrigin: http://127.0.0.1:4174
+webrtcLocalUDPAddress: ''
+webrtcLocalTCPAddress: 127.0.0.1:8189
+webrtcIPsFromInterfaces: no
+webrtcAdditionalHosts: [127.0.0.1]
+paths:
+  picamera2:
+    source: publisher
+    runOnDemand: ./research_camera_publisher.sh
+    runOnDemandStartTimeout: 30s
+    runOnDemandCloseAfter: 5s

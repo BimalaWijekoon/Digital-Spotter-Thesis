@@ -1,0 +1,41 @@
+[SCAN] Looking for 'ESP32-C3-Test'...
+[ASSERT] PASS — expected BLE name was discovered
+[ASSERT] PASS — device address matches the hardware contract
+[ASSERT] PASS — plain BLE connection is active
+[DEVICE_INFO] protocol=1;firmware=0.9.0-r9;hardware=esp32-c3;imu=mpu6500;rate_hz=50
+[ASSERT] PASS — R9 device info is exact
+[STATUS] label=initial value=state=idle;i2c_errors=0;samples_sent=0;uptime_ms=29988
+[ASSERT] PASS — new connection starts idle
+[ASSERT] PASS — initial status has no I2C errors
+[ASSERT] PASS — idle state emits no stream notifications
+[CONTROL] request=b'stream:start' response='ok:streaming'
+[CONTROL] request=b'cue:test' response='error:busy_streaming'
+[CONTROL] request=b'buzzer:test' response='ok:buzzer_test'
+[CONTROL] request=b'identify' response='ok:identify'
+[STATUS] label=streaming-final value=state=streaming;i2c_errors=0;samples_sent=1509;uptime_ms=60750
+[ASSERT] PASS — manual buzzer and deferred identify do not stop streaming
+[ASSERT] PASS — stream has no packet/protocol errors
+[TIMING] samples=1499 sensor_interval_min_us=14998 sensor_interval_max_us=24994 out_of_bound_count=0 first_out_of_bound=[]
+[ASSERT] PASS — sequence has zero gaps
+[ASSERT] PASS — sensor intervals remain within the R6 bound
+[ASSERT] PASS — concurrent notification rate remains approximately 50 Hz
+[ASSERT] PASS — no unexpected disconnect occurred
+[CONTROL] request=b'stream:stop' response='ok:idle'
+[ASSERT] PASS — stopped state remains notification-silent
+[CONTROL] request=b'cue:test' response='ok:cue_test'
+[STATUS] label=final-idle value=state=idle;i2c_errors=0;samples_sent=1512;uptime_ms=68307
+[ASSERT] PASS — cue test returns to idle
+[ASSERT] PASS — final status has no I2C errors
+[ASSERT] PASS — cue test does not disconnect BLE
+[SUMMARY]
+  duration_seconds=30.001075
+  samples=1499
+  notification_rate_hz=49.964876
+  sequence_gaps=0
+  sensor_interval_min_us=14998
+  sensor_interval_max_us=24994
+  i2c_errors=0
+  samples_sent=1512
+  unexpected_disconnects=0
+[ASSERT] PASS — client disconnected cleanly
+TEST RESULT: PASS

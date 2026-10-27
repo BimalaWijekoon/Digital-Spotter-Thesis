@@ -1,0 +1,14 @@
+2026/08/31 20:31:23 INF MediaMTX v1.9.1
+2026/08/31 20:31:23 INF configuration loaded from /home/pibimalawijekoon/digital-spotter-r13c-candidate-20260829/r13c_mediamtx_relay.yml
+2026/08/31 20:31:23 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2026/08/31 20:31:23 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2026/08/31 20:31:58 INF [RTSP] [conn 127.0.0.1:51990] opened
+2026/08/31 20:31:58 INF [RTSP] [session 89a7826c] created by 127.0.0.1:51990
+2026/08/31 20:31:58 INF [RTSP] [session 89a7826c] is publishing to path 'picamera2', 1 track (H264)
+2026/08/31 20:32:13 INF [RTSP] [conn 127.0.0.1:49582] opened
+2026/08/31 20:32:13 INF [RTSP] [session 185c1096] created by 127.0.0.1:49582
+2026/08/31 20:32:13 INF [RTSP] [session 185c1096] is reading from path 'picamera2', with TCP, 1 track (H264)
+2026/08/31 20:32:14 INF [RTSP] [session 185c1096] destroyed: torn down by 127.0.0.1:49582
+2026/08/31 20:32:14 INF [RTSP] [conn 127.0.0.1:49582] closed: EOF
+2026/08/31 20:32:18 INF [RTSP] [session 89a7826c] destroyed: torn down by 127.0.0.1:51990
+2026/08/31 20:32:18 INF [RTSP] [conn 127.0.0.1:51990] closed: EOF

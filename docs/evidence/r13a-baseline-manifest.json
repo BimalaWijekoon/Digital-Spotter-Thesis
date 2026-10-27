@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "checkpoint": "R13-A",
+  "captured_date": "2026-08-28",
+  "base_commit": "464da22543af00d483a9f88000c19f707567ed61",
+  "scope": {
+    "validation_level": "V0",
+    "evidence_environments": ["E0", "E2"],
+    "hardware_used": false,
+    "real_person_data_used": false,
+    "runtime_behavior_changed": false
+  },
+  "source_snapshot": [
+    {
+      "path": "scripts/run_server.py",
+      "role": "active migration launcher",
+      "sha256": "e51c017f5ad08ff2331c078fb7471048154ea27007b2827065ad793ea4d56f25"
+    },
+    {
+      "path": "scripts/dashboard/main.py",
+      "role": "active prototype HTTP camera and manual inference path",
+      "sha256": "ea7eac431fe890eeca7ee7e7f6df8100c00eefbc886d37f763cbd1ce50895327"
+    },
+    {
+      "path": "vision/frame_processor.py",
+      "role": "legacy camera and pose processing owner",
+      "sha256": "aee3453afde9255f515f70ff1d22027afeec203b52ef313366d538ee680fa2b3"
+    },
+    {
+      "path": "vision/pose_engine.py",
+      "role": "legacy MediaPipe and random mock pose provider",
+      "sha256": "0284f208ffdd4c47bf1ce4a9b22ad4026585a133f55cfd430d941667c79e0989"
+    },
+    {
+      "path": "vision/angle_calculator.py",
+      "role": "legacy landmark angle derivation",
+      "sha256": "1363c64b71b102f39c14d10241b81ff714d7425ff9bc70cdb5ea77c331771215"
+    },
+    {
+      "path": "vision/rep_segmenter.py",
+      "role": "legacy heuristic phase segmentation",
+      "sha256": "7d5bb3e5a58297dbebd01a849df3428aee1ade50854c479fb3b0f662cb08f8e8"
+    },
+    {
+      "path": "integration/session_manager.py",
+      "role": "legacy feature, inference, MQTT, and persistence orchestration",
+      "sha256": "fa5887a1460378ab5f0df8f095c5411e02ff5cbc301bb3694cacfbc02cdca799"
+    },
+    {
+      "path": "imu/esp32_bridge.py",
+      "role": "legacy MQTT or random mock IMU provider",
+      "sha256": "30098d0b463a5b8c3624541ec7880f10d3ddbf51651882275df4c84daf1a8a4a"
+    },
+    {
+      "path": "inference/feature_engineer.py",
+      "role": "legacy 40-feature builder",
+      "sha256": "62a14acc6d7e7bba5b5233d605dce18315fa2f74ff4cb3235775bcdfd8a922fa"
+    },
+    {
+      "path": "inference/sequence_buffer.py",
+      "role": "legacy three-phase plus delta sequence builder",
+      "sha256": "e62f3e4c6968453df7dd887a0192cca9287a3ed579e0547deb78578d91aa1a6f"
+    },
+    {
+      "path": "inference/preprocessor.py",
+      "role": "legacy preprocessing with permissive artifact fallback",
+      "sha256": "1b0978025f275d74aff8630b30861b32d3b1082239369d419691b023bc0fb5e2"
+    },
+    {
+      "path": "inference/lstm_runner.py",
+      "role": "legacy Flex model runtime with random mock fallback",
+      "sha256": "aa31d534a5ccb4a168f2bc64f8f13c4862876b6eaaf52c7675dcdfea401a78df"
+    },
+    {
+      "path": "config/config.py",
+      "role": "legacy runtime configuration and rounded model threshold",
+      "sha256": "1bf14859a05d257f7ca0cdd3e1930bff19b90ef2fd52cfa7eccfd9e9781abf64"
+    },
+    {
+      "path": "config/constants.py",
+      "role": "legacy feature order and sequence constants",
+      "sha256": "a5ba5c1ad74509a28e70e5b89b3e9eedf96a6adf5527fee18b7698f26d00c906"
+    },
+    {
+      "path": "src/digital_spotter/contracts/events.py",
+      "role": "canonical event and measurement-time contracts",
+      "sha256": "ad123f67c8b16de68fdda2f6900a8f28178485aa6bb72462746fa71143beb2de"
+    },
+    {
+      "path": "src/digital_spotter/contracts/model.py",
+      "role": "canonical compatibility model manifest contract",
+      "sha256": "e37a2268a6cf4fb39a3f49c37d8b85c88fb22e626d64726ba44835d517f625b6"
+    },
+    {
+      "path": "src/digital_spotter/core/replay.py",
+      "role": "canonical deterministic non-real replay boundary",
+      "sha256": "b5a5bde1a3021af31b507cd90cbb20ce870c25bf301991d5bc1b20ffc48cf4ba"
+    },
+    {
+      "path": "src/digital_spotter/core/sessions.py",
+      "role": "R12 canonical local session boundary",
+      "sha256": "76fbf0dda747335f0067c91c8731c6cdf1c1f1147e79bc7a01e0b48fbcf46e05"
+    },
+    {
+      "path": "src/digital_spotter/imu/r9_agent.py",
+      "role": "R11 canonical live IMU event producer",
+      "sha256": "2357d8e4543f91eded31b0b2de7ce283f50c68059588962d735e0d8adf3b22c4"
+    },
+    {
+      "path": "src/digital_spotter/imu/clock.py",
+      "role": "existing deterministic clock estimator not yet used by R9 live events",
+      "sha256": "e534c7ab62e612e78cc2e8797537c5df7543d7b70177484a733325852716cb8f"
+    }
+  ],
+  "model": {
+    "manifest_path": "models/manifest.json",
+    "manifest_sha256": "86779d91a661268682253bbbf2310a221338a8069d902ad0c368bb3d25cb135b",
+    "package_id": "digital-spotter-v4-compat",
+    "model_version": "4.0.0-compat",
+    "feature_contract_version": "1.0.0-compat",
+    "release_status": "compatibility_only",
+    "input_shape": [1, 4, 40],
+    "threshold": 0.35947465896606445,
+    "requires_flex_delegate": true,
+    "approved_exercises": [],
+    "compatibility_ready": true,
+    "production_ready": false
+  },
+  "replay": {
+    "fixture_path": "tests/fixtures/replay/v1/synthetic_normal_rep.json",
+    "fixture_sha256": "8b1b9cc33e44455a7cac48f5ec49f1759be9df5997324a742d42d631693890ea",
+    "video_path": "tests/fixtures/replay/v1/synthetic_motion_4x4.y4m",
+    "video_sha256": "5da978d669eede5b2613d95dc753e7c7f338b6922bd14da2a8c5fc6625d5580e",
+    "is_real": false,
+    "persistence_allowed": false
+  },
+  "known_blockers": [
+    "R13A-B01-live-frame-result-not-dispatched-to-session-manager",
+    "R13A-B02-live-imu-selected-by-arrival-not-measurement-time",
+    "R13A-B03-manual-api-and-session-feature-builders-diverge",
+    "R13A-B04-missing-inputs-and-model-failures-can-become-zero-or-mock-results",
+    "R13A-B05-camera-stop-restart-does-not-recreate-pose-owner",
+    "R13A-B06-camera-capture-time-is-wall-clock-processing-time",
+    "R13A-B07-current-model-is-compatibility-only-flex-and-unapproved",
+    "R13A-B08-lower-back-imu-does-not-validate-bar-velocity-or-power-semantics",
+    "R13A-B09-vision-and-model-dependencies-are-outside-the-canonical-lock"
+  ]
+}

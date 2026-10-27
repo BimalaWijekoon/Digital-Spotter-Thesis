@@ -1,0 +1,131 @@
+{
+  "completed_utc": "2026-09-27T13:41:15.451984+00:00",
+  "config_hash": "9783f7c8003f23e78c2f3c1a3e2f43916e5adafc973fd68bd0179b67891927ec",
+  "development_only": true,
+  "final_epochs": 9,
+  "inner_best_epochs": [
+    {
+      "best_epoch": 3,
+      "epochs_run": 11,
+      "inner_fold": 0,
+      "outer_fold": 0
+    },
+    {
+      "best_epoch": 8,
+      "epochs_run": 16,
+      "inner_fold": 1,
+      "outer_fold": 0
+    },
+    {
+      "best_epoch": 4,
+      "epochs_run": 12,
+      "inner_fold": 2,
+      "outer_fold": 0
+    },
+    {
+      "best_epoch": 9,
+      "epochs_run": 17,
+      "inner_fold": 3,
+      "outer_fold": 0
+    },
+    {
+      "best_epoch": 7,
+      "epochs_run": 15,
+      "inner_fold": 0,
+      "outer_fold": 1
+    },
+    {
+      "best_epoch": 11,
+      "epochs_run": 19,
+      "inner_fold": 1,
+      "outer_fold": 1
+    },
+    {
+      "best_epoch": 22,
+      "epochs_run": 30,
+      "inner_fold": 2,
+      "outer_fold": 1
+    },
+    {
+      "best_epoch": 5,
+      "epochs_run": 13,
+      "inner_fold": 3,
+      "outer_fold": 1
+    },
+    {
+      "best_epoch": 14,
+      "epochs_run": 22,
+      "inner_fold": 0,
+      "outer_fold": 2
+    },
+    {
+      "best_epoch": 18,
+      "epochs_run": 26,
+      "inner_fold": 1,
+      "outer_fold": 2
+    },
+    {
+      "best_epoch": 5,
+      "epochs_run": 13,
+      "inner_fold": 2,
+      "outer_fold": 2
+    },
+    {
+      "best_epoch": 17,
+      "epochs_run": 25,
+      "inner_fold": 3,
+      "outer_fold": 2
+    },
+    {
+      "best_epoch": 9,
+      "epochs_run": 17,
+      "inner_fold": 0,
+      "outer_fold": 3
+    },
+    {
+      "best_epoch": 12,
+      "epochs_run": 20,
+      "inner_fold": 1,
+      "outer_fold": 3
+    },
+    {
+      "best_epoch": 3,
+      "epochs_run": 11,
+      "inner_fold": 2,
+      "outer_fold": 3
+    },
+    {
+      "best_epoch": 5,
+      "epochs_run": 13,
+      "inner_fold": 3,
+      "outer_fold": 3
+    },
+    {
+      "best_epoch": 5,
+      "epochs_run": 13,
+      "inner_fold": 0,
+      "outer_fold": 4
+    },
+    {
+      "best_epoch": 11,
+      "epochs_run": 19,
+      "inner_fold": 1,
+      "outer_fold": 4
+    },
+    {
+      "best_epoch": 15,
+      "epochs_run": 23,
+      "inner_fold": 2,
+      "outer_fold": 4
+    },
+    {
+      "best_epoch": 9,
+      "epochs_run": 17,
+      "inner_fold": 3,
+      "outer_fold": 4
+    }
+  ],
+  "median_best_epoch": 9.0,
+  "outer_test_labels_or_predictions_used": false,
+  "policy": "round-half-up median of 20 inner best val_loss epochs"
+}

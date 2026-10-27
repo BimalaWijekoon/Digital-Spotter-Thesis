@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Digital Spotter — AI-powered real-time posture correction for compound barbell lifts">
+    <title>Digital Spotter — AI Posture Coach</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- ─── Top Bar ─── -->
+    <header class="topbar" id="topbar">
+        <div class="topbar__brand">
+            <div class="topbar__logo">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="var(--accent)" stroke-width="2" />
+                    <circle cx="14" cy="14" r="5" fill="var(--accent)" />
+                    <line x1="14" y1="2" x2="14" y2="8" stroke="var(--accent)" stroke-width="2" />
+                    <line x1="14" y1="20" x2="14" y2="26" stroke="var(--accent)" stroke-width="2" />
+                </svg>
+            </div>
+            <h1 class="topbar__title">Digital Spotter</h1>
+            <span class="topbar__version">v1.0</span>
+        </div>
+        <div class="topbar__status">
+            <div class="status-dot" id="status-dot"></div>
+            <span class="topbar__connection" id="connection-label">Connecting…</span>
+            <span class="topbar__separator">|</span>
+            <span class="topbar__fps" id="fps-label">0 FPS</span>
+            <span class="topbar__separator">|</span>
+            <span class="topbar__latency" id="latency-label">0ms</span>
+        </div>
+    </header>
+
+    <!-- ─── Main Layout ─── -->
+    <main class="layout" id="main-layout">
+
+        <!-- ─── Left Sidebar ─── -->
+        <aside class="sidebar sidebar--left" id="sidebar-left">
+
+            <!-- Session Control -->
+            <section class="card" id="session-control">
+                <h2 class="card__title">Session</h2>
+                <div class="control-group">
+                    <label class="control-label" for="exercise-select">Exercise</label>
+                    <select class="select" id="exercise-select">
+                        <option value="0">Barbell Back Squat</option>
+                        <option value="1">Conventional Deadlift</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="subject-height">Height (cm)</label>
+                    <input class="input" type="number" id="subject-height" value="175.0" step="0.1" style="width:100%; box-sizing:border-box;">
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="subject-weight">Weight (kg)</label>
+                    <input class="input" type="number" id="subject-weight" value="75.0" step="0.1" style="width:100%; box-sizing:border-box;">
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="subject-ftr">Femur/Tibia Ratio</label>
+                    <input class="input" type="number" id="subject-ftr" value="1.20" step="0.01" style="width:100%; box-sizing:border-box;">
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="session-load">Barbell Load (kg)</label>
+                    <input class="input" type="number" id="session-load" value="0.0" step="0.5" style="width:100%; box-sizing:border-box;">
+                </div>
+                <button class="btn btn--primary btn--block" id="btn-start-session">
+                    ▶ Start Session
+                </button>
+                <button class="btn btn--danger btn--block hidden" id="btn-stop-session">
+                    ■ Stop Session
+                </button>
+                <div class="session-timer hidden" id="session-timer">
+                    <span class="session-timer__label">Duration</span>
+                    <span class="session-timer__value" id="timer-value">00:00</span>
+                </div>
+            </section>
+
+            <!-- Rep Counter -->
+            <section class="card" id="rep-counter-card">
+                <h2 class="card__title">Reps</h2>
+                <div class="rep-counter">
+                    <span class="rep-counter__number" id="rep-total">0</span>
+                </div>
+                <div class="rep-split">
+                    <div class="rep-split__good">
+                        <span class="rep-split__value" id="rep-good">0</span>
+                        <span class="rep-split__label">Good</span>
+                    </div>
+                    <div class="rep-split__bad">
+                        <span class="rep-split__value" id="rep-bad">0</span>
+                        <span class="rep-split__label">Bad</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase Indicator -->
+            <section class="card" id="phase-card">
+                <h2 class="card__title">Phase</h2>
+                <div class="phase-indicator">
+                    <div class="phase-step" id="phase-1" data-phase="1">
+                        <div class="phase-step__dot"></div>
+                        <span>Eccentric</span>
+                    </div>
+                    <div class="phase-step" id="phase-2" data-phase="2">
+                        <div class="phase-step__dot"></div>
+                        <span>Isometric</span>
+                    </div>
+                    <div class="phase-step" id="phase-3" data-phase="3">
+                        <div class="phase-step__dot"></div>
+                        <span>Concentric</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Form Alert -->
+            <section class="card form-alert" id="form-alert">
+                <div class="form-alert__label" id="form-label">GOOD FORM</div>
+                <div class="form-alert__bar">
+                    <div class="form-alert__fill" id="form-bar" style="width:50%"></div>
+                </div>
+                <div class="form-alert__confidence" id="form-confidence">50%</div>
+            </section>
+        </aside>
+
+        <!-- ─── Main Content ─── -->
+        <section class="main-content" id="main-content">
+            <div class="video-container" id="video-container">
+                <img class="video-feed" id="video-feed" />
+                <canvas class="pose-canvas" id="pose-canvas"></canvas>
+                <div class="video-overlay-controls">
+                    <button class="btn-icon" id="btn-toggle-overlay" title="Toggle Skeleton">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <circle cx="10" cy="4" r="2.5" />
+                            <line x1="10" y1="6.5" x2="10" y2="13" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="5" y1="9" x2="15" y2="9" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="10" y1="13" x2="6" y2="18" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="10" y1="13" x2="14" y2="18" stroke="currentColor" stroke-width="1.5" />
+                        </svg>
+                    </button>
+                    <button class="btn-icon" id="btn-fullscreen" title="Fullscreen">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="video-no-signal" id="no-signal">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="var(--muted)" stroke-width="2">
+                        <rect x="6" y="10" width="36" height="24" rx="3" />
+                        <circle cx="24" cy="22" r="6" />
+                        <line x1="6" y1="38" x2="42" y2="38" />
+                    </svg>
+                    <span>No Camera Signal</span>
+                    <span class="video-no-signal__sub">Waiting for WebRTC stream…</span>
+                </div>
+            </div>
+
+            <!-- Feedback Bar -->
+            <div class="feedback-bar" id="feedback-bar">
+                <span class="feedback-bar__label">Form Confidence</span>
+                <div class="feedback-bar__track">
+                    <div class="feedback-bar__fill" id="feedback-fill" style="width:50%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Right Sidebar ─── -->
+        <aside class="sidebar sidebar--right" id="sidebar-right">
+
+            <!-- Joint Angles -->
+            <section class="card" id="angles-card">
+                <h2 class="card__title">Joint Angles</h2>
+                <div class="angle-list" id="angle-list">
+                    <div class="angle-item" data-joint="LEFT_HIP">
+                        <span class="angle-item__name">L Hip</span>
+                        <span class="angle-item__value" id="angle-LEFT_HIP">—°</span>
+                    </div>
+                    <div class="angle-item" data-joint="RIGHT_HIP">
+                        <span class="angle-item__name">R Hip</span>
+                        <span class="angle-item__value" id="angle-RIGHT_HIP">—°</span>
+                    </div>
+                    <div class="angle-item" data-joint="LEFT_KNEE">
+                        <span class="angle-item__name">L Knee</span>
+                        <span class="angle-item__value" id="angle-LEFT_KNEE">—°</span>
+                    </div>
+                    <div class="angle-item" data-joint="RIGHT_KNEE">
+                        <span class="angle-item__name">R Knee</span>
+                        <span class="angle-item__value" id="angle-RIGHT_KNEE">—°</span>
+                    </div>
+                    <div class="angle-item" data-joint="LEFT_ANKLE">
+                        <span class="angle-item__name">L Ankle</span>
+                        <span class="angle-item__value" id="angle-LEFT_ANKLE">—°</span>
+                    </div>
+                    <div class="angle-item" data-joint="RIGHT_ANKLE">
+                        <span class="angle-item__name">R Ankle</span>
+                        <span class="angle-item__value" id="angle-RIGHT_ANKLE">—°</span>
+                    </div>
+                    <div class="angle-item" data-joint="TRUNK">
+                        <span class="angle-item__name">Trunk</span>
+                        <span class="angle-item__value" id="angle-TRUNK">—°</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Chart -->
+            <section class="card" id="chart-card">
+                <h2 class="card__title">Angle History</h2>
+                <div class="chart-container">
+                    <canvas id="angle-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- Session History -->
+            <section class="card" id="history-card">
+                <h2 class="card__title">Recent Sessions</h2>
+                <div class="session-list" id="session-list">
+                    <div class="session-list__empty">No sessions yet</div>
+                </div>
+            </section>
+
+            <!-- System Panel -->
+            <section class="card" id="system-card">
+                <h2 class="card__title">System</h2>
+                <div class="system-stats">
+                    <div class="system-stat">
+                        <span class="system-stat__label">Camera</span>
+                        <span class="system-stat__value" id="sys-camera">—</span>
+                    </div>
+                    <div class="system-stat">
+                        <span class="system-stat__label">Model</span>
+                        <span class="system-stat__value" id="sys-model">—</span>
+                    </div>
+                    <div class="system-stat">
+                        <span class="system-stat__label">Uptime</span>
+                        <span class="system-stat__value" id="sys-uptime">—</span>
+                    </div>
+                    <div class="system-stat">
+                        <span class="system-stat__label">Clients</span>
+                        <span class="system-stat__value" id="sys-clients">0</span>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Scripts (non-module for compatibility) -->
+    <!-- Pi backend host config — edit this one line when deploying the
+         dashboard somewhere other than the Pi itself (e.g. Vercel).
+         Use the Pi's Tailscale address so it works from any network. -->
+    <script>window.DS_PI_HOST = '100.104.28.69';</script>
+
+    <script src="js/stream.js"></script>
+    <script src="js/websocket.js"></script>
+    <script src="js/pose_overlay.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/ui_controller.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

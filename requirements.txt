@@ -1,0 +1,40 @@
+# Digital Spotter - Python Dependencies
+# Edge-based multimodal AI posture correction system
+# Target: Raspberry Pi 4B 8GB RAM | current baseline Debian 13 64-bit (aarch64)
+# Author: bimalawijekoon
+# Version: 1.0.0
+
+# Active FastAPI migration server
+fastapi==0.111.0
+uvicorn==0.30.1
+pydantic==2.7.4
+python-dotenv==1.0.1
+websockets==12.0
+
+# Historical Flask server (retained until M0-04/G3 parity cleanup)
+flask==3.0.3
+flask-socketio==5.3.6
+flask-cors==4.0.1
+eventlet==0.36.1
+
+# Computer vision & pose estimation
+mediapipe==0.10.14
+opencv-python-headless==4.10.0.84
+
+
+# Signal processing — Savitzky-Golay filter for rep phase segmentation
+scipy==1.13.1
+
+# Serialisation — scaler.pkl loading
+numpy==1.26.4
+joblib==1.4.2
+# The tracked scaler artifact records sklearn_version=1.8.0.
+scikit-learn==1.8.0
+
+# IoT / sensor
+paho-mqtt==2.1.0
+
+# Testing
+pytest==8.2.2
+requests==2.32.3
+httpx==0.27.0

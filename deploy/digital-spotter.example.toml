@@ -1,0 +1,5 @@
+# Non-secret M3-04 development example. This does not enable the canonical worker
+# by itself and is not a production authentication configuration.
+
+[video]
+publish_url = "rtsp://127.0.0.1:8554/picamera2"

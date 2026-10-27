@@ -1,0 +1,7 @@
+{
+  "passed": false,
+  "reason": "no_decoded_video",
+  "stage": "first_camera_restore_attempt",
+  "diagnosis": "Canonical vision on-demand startup was stopped after 30 seconds while importing MediaPipe's optional TensorFlow documentation dependency; camera capture had not started.",
+  "hardware_simulated": false
+}

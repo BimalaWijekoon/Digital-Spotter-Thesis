@@ -1,0 +1,20 @@
+[SCAN] Looking for 'ESP32-C3-Test'...
+[ASSERT] PASS — expected BLE name was discovered
+[ASSERT] PASS — device address matches the hardware contract
+[ASSERT] PASS — plain BLE connection is active
+[ASSERT] PASS — R9 device info is exact
+[DEMO] Connected idle: green for 1.5 seconds
+[DEMO] Cue test: white, blue, green, cyan, orange, red (0.9 seconds each)
+[CONTROL] request=b'cue:test' response='ok:cue_test'
+[ASSERT] PASS — control response for b'cue:test' matches
+[DEMO] Natural streaming state: steady cyan for 2 seconds
+[CONTROL] request=b'stream:start' response='ok:streaming'
+[ASSERT] PASS — control response for b'stream:start' matches
+[DEMO] Manual buzzer: one short 2500 Hz beep
+[CONTROL] request=b'buzzer:test' response='ok:buzzer_test'
+[ASSERT] PASS — control response for b'buzzer:test' matches
+[CONTROL] request=b'stream:stop' response='ok:idle'
+[ASSERT] PASS — control response for b'stream:stop' matches
+[DEMO] Connected idle: green for 1 second
+[DEMO] Disconnect: orange flash, then blue advertising breath
+CUE DEMO COMPLETE — owner confirmed the sequence exactly and heard the beep

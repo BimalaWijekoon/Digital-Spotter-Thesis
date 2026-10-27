@@ -1,0 +1,9 @@
+{
+  "all_four_share_identical_bind_geometry_weights_materials_and_inverse_bind_matrices": true,
+  "skin_weights_normalized": true,
+  "indices_valid": true,
+  "finite_vertex_data": true,
+  "stationary_endpoint_holds": true,
+  "official_khronos_validator_run": false,
+  "three_js_browser_playback_tested": false
+}

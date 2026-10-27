@@ -1,0 +1,58 @@
+[
+  {
+    "animation": "Squat_Correct",
+    "duration_seconds": 5.300000190734863,
+    "max_grip_anchor_drift_metres": 5.172374360232479e-06,
+    "max_foot_transform_drift": 1.843705844506438e-05,
+    "minimum_shoe_height_metres": 0.0009814922232180834,
+    "minimum_barbell_height_metres": 0.7700668573379517,
+    "minimum_sampled_leg_front_to_shaft_clearance_metres": null,
+    "maximum_segment_length_variation_metres": 4.996003610813204e-16,
+    "loop_max_vertex_delta_metres": 0.0,
+    "extensionsRequired": [],
+    "external_uris": [],
+    "interpretation": "Numerical scene contact checks only. Grip anchors are not a full finger/shaft collision test. Leg clearance uses sampled vertices within a 12 mm height band, not continuous collision detection. No biomechanical or clinical validation."
+  },
+  {
+    "animation": "Squat_ExcessiveForwardLean",
+    "duration_seconds": 5.300000190734863,
+    "max_grip_anchor_drift_metres": 1.6380307699884045e-05,
+    "max_foot_transform_drift": 1.845688468027351e-05,
+    "minimum_shoe_height_metres": 0.0009814854711294174,
+    "minimum_barbell_height_metres": 0.6157815456390381,
+    "minimum_sampled_leg_front_to_shaft_clearance_metres": null,
+    "maximum_segment_length_variation_metres": 6.106226635438361e-16,
+    "loop_max_vertex_delta_metres": 0.0,
+    "extensionsRequired": [],
+    "external_uris": [],
+    "interpretation": "Numerical scene contact checks only. Grip anchors are not a full finger/shaft collision test. Leg clearance uses sampled vertices within a 12 mm height band, not continuous collision detection. No biomechanical or clinical validation."
+  },
+  {
+    "animation": "Deadlift_Correct",
+    "duration_seconds": 5.300000190734863,
+    "max_grip_anchor_drift_metres": 1.404633545416134e-05,
+    "max_foot_transform_drift": 2.003033226460893e-05,
+    "minimum_shoe_height_metres": 0.0009799896506592631,
+    "minimum_barbell_height_metres": 0.0,
+    "minimum_sampled_leg_front_to_shaft_clearance_metres": 0.002472898155425311,
+    "maximum_segment_length_variation_metres": 4.440892098500626e-16,
+    "loop_max_vertex_delta_metres": 0.0,
+    "extensionsRequired": [],
+    "external_uris": [],
+    "interpretation": "Numerical scene contact checks only. Grip anchors are not a full finger/shaft collision test. Leg clearance uses sampled vertices within a 12 mm height band, not continuous collision detection. No biomechanical or clinical validation."
+  },
+  {
+    "animation": "Deadlift_SpinalRounding",
+    "duration_seconds": 5.300000190734863,
+    "max_grip_anchor_drift_metres": 1.5316145037582087e-05,
+    "max_foot_transform_drift": 1.9407220406719716e-05,
+    "minimum_shoe_height_metres": 0.0009805773152038455,
+    "minimum_barbell_height_metres": 0.0,
+    "minimum_sampled_leg_front_to_shaft_clearance_metres": 0.002474075347159625,
+    "maximum_segment_length_variation_metres": 4.996003610813204e-16,
+    "loop_max_vertex_delta_metres": 0.0,
+    "extensionsRequired": [],
+    "external_uris": [],
+    "interpretation": "Numerical scene contact checks only. Grip anchors are not a full finger/shaft collision test. Leg clearance uses sampled vertices within a 12 mm height band, not continuous collision detection. No biomechanical or clinical validation."
+  }
+]

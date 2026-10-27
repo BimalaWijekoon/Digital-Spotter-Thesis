@@ -1,0 +1,20 @@
+# Canonical M3-04 relay boundary. Picamera2 is the sole camera owner and publishes
+# an already hardware-encoded H.264 stream to the loopback-only RTSP listener.
+logLevel: info
+
+rtsp: yes
+rtspAddress: 127.0.0.1:8554
+
+rtmp: no
+hls: no
+srt: no
+
+# WHEP is intentionally LAN-facing for development bring-up. Local-client
+# authentication and the approved firewall/TLS exposure remain later M3-04/M6 gates.
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+
+paths:
+  picamera2:
+    source: publisher

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "fixture_id": "invalid-event-type-v1",
+  "adapter_mode": "replay",
+  "provenance": {
+    "kind": "synthetic",
+    "contains_person_data": false,
+    "consent": "not_applicable_synthetic",
+    "description": "Negative fixture whose declared event type contradicts its payload."
+  },
+  "video": {"kind": "none", "path": null, "sha256": null},
+  "events": [
+    {
+      "schema_version": 256,
+      "event_type": "pose_sample",
+      "event_id": "01977420-dc00-7000-8000-000000000035",
+      "source": "imu",
+      "device_id": "imu-test-001",
+      "session_id": "11111111-1111-4111-8111-111111111111",
+      "captured_monotonic_ns": 4000000,
+      "created_monotonic_ns": 4020000,
+      "created_utc_ms": 1750000000003,
+      "quality": "good",
+      "trace_id": null,
+      "payload": {
+        "device_id": "imu-test-001",
+        "boot_id": 10,
+        "sequence": 1,
+        "sensor_time_us": 4000,
+        "captured_monotonic_ns": 4000000,
+        "arrival_monotonic_ns": 4010000,
+        "acceleration_m_s2": [0.0, 9.8, 0.0],
+        "angular_velocity_rad_s": [0.0, 0.0, 0.0],
+        "calibration_version": 1,
+        "quality": "good",
+        "gap_count_since_previous": 0,
+        "estimated_clock_error_ns": 40000,
+        "clock_state": "synchronized"
+      }
+    }
+  ],
+  "expected": {
+    "event_count": 1,
+    "phase_sequence": [],
+    "analysis_labels": [],
+    "imu_gap_count": 0,
+    "clock_reset_count": 0,
+    "event_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

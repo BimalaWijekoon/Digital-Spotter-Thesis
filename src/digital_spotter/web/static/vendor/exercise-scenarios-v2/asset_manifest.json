@@ -1,0 +1,58 @@
+[
+  {
+    "scenario_id": "squat_correct",
+    "display_label": "Squat \u2014 correct form",
+    "intentional_technique_error": null,
+    "file": "squat_correct.glb",
+    "bytes": 1984916,
+    "animation": "Squat_Correct",
+    "duration_seconds": 5.3,
+    "vertices": 25408,
+    "triangles": 48784,
+    "joints": 18,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "scenario_id": "squat_forward_lean",
+    "display_label": "Squat \u2014 excessive forward lean",
+    "intentional_technique_error": "Excessive forward lean",
+    "file": "squat_forward_lean.glb",
+    "bytes": 1984964,
+    "animation": "Squat_ExcessiveForwardLean",
+    "duration_seconds": 5.3,
+    "vertices": 25408,
+    "triangles": 48784,
+    "joints": 18,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "scenario_id": "deadlift_correct",
+    "display_label": "Conventional deadlift \u2014 correct form",
+    "intentional_technique_error": null,
+    "file": "deadlift_correct.glb",
+    "bytes": 1984572,
+    "animation": "Deadlift_Correct",
+    "duration_seconds": 5.3,
+    "vertices": 25408,
+    "triangles": 48784,
+    "joints": 18,
+    "required_extensions": [],
+    "external_uris": []
+  },
+  {
+    "scenario_id": "deadlift_spinal_rounding",
+    "display_label": "Conventional deadlift \u2014 spinal rounding",
+    "intentional_technique_error": "Spinal rounding",
+    "file": "deadlift_spinal_rounding.glb",
+    "bytes": 1984604,
+    "animation": "Deadlift_SpinalRounding",
+    "duration_seconds": 5.3,
+    "vertices": 25408,
+    "triangles": 48784,
+    "joints": 18,
+    "required_extensions": [],
+    "external_uris": []
+  }
+]

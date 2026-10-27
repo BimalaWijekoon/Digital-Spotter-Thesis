@@ -1,0 +1,9 @@
+{
+  "error_type_fields_used_to_make_target": false,
+  "majority_vote_used": false,
+  "name": "V5_REPRO_TARGET",
+  "phase_label_inconsistent_repetitions_unmodified": 374,
+  "reason": "historical V4 reproduction policy only; not corrected ground truth",
+  "repetitions": 2018,
+  "rule": "Class_Binary from original terminal (third) phase row"
+}

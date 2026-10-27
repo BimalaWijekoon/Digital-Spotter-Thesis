@@ -1,0 +1,27 @@
+[Unit]
+Description=Digital Spotter BLE IMU Agent
+After=bluetooth.service
+Requires=bluetooth.service
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=digital-spotter
+Group=digital-spotter
+SupplementaryGroups=bluetooth
+WorkingDirectory=/opt/digital-spotter/current
+ExecStart=/opt/digital-spotter/current/.venv/bin/ds-imu-agent --device-id dsimu-r9-50787d92611a --device-name ESP32-C3-Test --device-address 50:78:7D:92:61:1A --socket /run/digital-spotter/core-events.sock
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RuntimeDirectory=digital-spotter
+RuntimeDirectoryMode=0750
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,47 @@
+{
+  "candidate": "picamera2",
+  "evidence_environment": "real_hardware",
+  "hardware_simulated": false,
+  "measurement": {
+    "candidate": "picamera2",
+    "capture_age_p50_ms": 71.107,
+    "capture_age_p95_ms": 72.933,
+    "capture_times_monotonic": true,
+    "effective_pose_fps": 7.332,
+    "failed_checks": [],
+    "frames_processed": 72,
+    "missing_person_explicit": true,
+    "observed_duration_s": 9.820494,
+    "pose_found_pct": 0.0,
+    "pose_processing_p50_ms": 122.302,
+    "pose_processing_p95_ms": 124.32,
+    "pose_valid_pct": 0.0,
+    "source_frames_dropped": 220,
+    "timestamp_coverage_pct": 100.0
+  },
+  "resources": {
+    "process_cpu_pct": 88.7,
+    "rss_end_mb": 574.4,
+    "rss_peak_mb": 626.0,
+    "rss_start_mb": 514.3,
+    "stack_cpu_pct": 121.2,
+    "stack_processes": [
+      "pose-benchmark",
+      "picamera2-helper"
+    ],
+    "stack_rss_end_mb": 679.6,
+    "stack_rss_peak_mb": 679.6,
+    "stack_rss_start_mb": 668.7,
+    "temperature_end_c": 57.452,
+    "temperature_peak_c": 60.374,
+    "temperature_start_c": 55.991,
+    "throttled_end": "throttled=0x0",
+    "throttled_start": "throttled=0x0"
+  },
+  "restart_passed": true,
+  "restart_results": [
+    true,
+    true,
+    true
+  ]
+}

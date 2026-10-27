@@ -1,0 +1,30 @@
+{
+  "calibration_fitted": false,
+  "comparison_order": [
+    "pr_auc",
+    "f1",
+    "recall",
+    "brier",
+    "plain_BCE_tie_break"
+  ],
+  "completed_utc": "2026-09-26T18:25:53.022495+00:00",
+  "config_hash": "60acc930a09177dd6d11bc9cb4b4730bc3a6f525231b8e4c24a802f2f2a44e64",
+  "decision_metric": "PRACTICAL_TIE",
+  "independent_generalisation_estimate": false,
+  "outer_test_labels_used_for_policy_selection": true,
+  "policy_differences_weighted_minus_bce": {
+    "brier": 9.488489595602112e-05,
+    "f1": -0.0005542880257143334,
+    "pr_auc": -0.0012669184845912618,
+    "recall": 0.0
+  },
+  "selected_policy": "LOSS_A_BCE",
+  "selection_source": "two raw 2,018-repetition outer-fold OOF prediction sets",
+  "threshold_tuned": false,
+  "tolerances": {
+    "brier": 0.001,
+    "f1": 0.005,
+    "pr_auc": 0.005,
+    "recall": 0.005
+  }
+}

@@ -1,0 +1,52 @@
+CHARACTER, HAIR AND TEXTURES — CC0 1.0 UNIVERSAL
+
+Quaternius, Universal Base Characters [Standard].
+Source: https://quaternius.itch.io/universal-base-characters
+Official pack page: https://quaternius.com/packs/universalbasecharacters.html
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+The supplied archive's License_Standard.txt explicitly identifies this free
+Standard kit as CC0 1.0 Universal. Its original notice is included at
+source/character/License_Standard.txt. The pack's Superhero Male body, facial
+features, 65-bone rig, skin weights, Simple Parted hair and associated textures
+were used. Source files from the supplied archive are preserved in that folder.
+
+CC0 permits use, modification, embedding and redistribution, including in this
+offline research dashboard. Attribution is not required. Optional credit:
+"Character by Quaternius (CC0); exercise motions custom authored."
+CC0 does not provide a warranty or imply Quaternius endorses these animations.
+
+ORIGINAL AUTHORING CODE, EQUIPMENT AND MOTION CONTRIBUTIONS — MIT
+
+Copyright (c) 2026 Exercise Animation Review contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+This MIT notice covers the original authoring source, equipment geometry,
+custom exercise motion, documentation and preview production contributions,
+to the extent rights exist in AI-assisted outputs. It does not relicense or
+claim ownership of Quaternius's CC0 source assets. Keep this notice with
+distributed application/assets. No on-screen credit is required.
+
+Python, NumPy, SciPy, Pillow, FFmpeg and the C++ compiler are production tools,
+not bundled runtime dependencies of the GLBs. DejaVu Sans is rasterized into
+preview captions; no font file is included. Three.js is not bundled.
+
+The motions are authored demonstrations, not motion capture, biomechanical
+validation, exercise certification or diagnostic findings from an ML model.

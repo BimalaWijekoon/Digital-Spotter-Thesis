@@ -1,0 +1,20 @@
+[Unit]
+Description=Digital Spotter loopback camera relay
+After=digital-spotter-research-core.service
+Requires=digital-spotter-research-core.service
+PartOf=digital-spotter-research.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/digital-spotter-research/appliance.env
+WorkingDirectory=%h/digital-spotter-research/current/scripts
+ExecStart=/bin/sh %h/digital-spotter-research/current/deploy/research-appliance/run-media.sh
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=digital-spotter-research.target
